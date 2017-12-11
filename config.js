@@ -32,7 +32,11 @@
                     "name": "Belysning i vardagsrummet"
                 },
                 "VS-05": {
-                    "name": "Larm"
+                    "name": "Larm",
+                    "notifications": {
+                        "on": "Larm aktiverat.",
+                        "off": "Larm avaktiverat."
+                    }
                 },
                 "VS-06": {
                     "name": "Belysning på kontoret"
@@ -69,9 +73,6 @@
                 "RK-01": {
                     "name": "Ringklocka",
                     "type": "MotionSensor"
-                },
-                "PS-02": {
-                    "name": "Belysning i snickarrummet"
                 },
                 "SR-01": {
                     "name": "Skymmningsrelä"
