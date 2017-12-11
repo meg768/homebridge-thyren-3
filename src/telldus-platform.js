@@ -9,6 +9,8 @@ var TelldusThermometer = require('./telldus-thermometer.js');
 var TelldusHygrometer = require('./telldus-hygrometer.js');
 var TelldusThermometerHygrometer = require('./telldus-thermometer-hygrometer.js');
 
+var Pushover = require('pushover-notifications');
+
 function debug() {
     console.log.apply(this, arguments);
 }
