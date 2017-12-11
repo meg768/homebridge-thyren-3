@@ -6,7 +6,7 @@ module.exports = class TelldusHygrometer extends TelldusAccessory {
 
     getServices() {
         var services = super.getServices();
-        var service  = new this.Service.HumiditySensor(this.name);
+        var service  = new this.Service.HumiditySensor(this.displayName, this.name);
         var chars    = service.getCharacteristic(this.Characteristic.CurrentRelativeHumidity);
 
         chars.on('get', (callback) => {

@@ -14,17 +14,17 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         switch (this.type) {
             case 'switch':
                 {
-                    this.service = new this.Service.Switch(this.name);
+                    this.service = new this.Service.Switch(this.displayName, this.name);
                     break;
                 }
             case 'lightbulb':
                 {
-                    this.service = new this.Service.Lightbulb(this.name);
+                    this.service = new this.Service.Lightbulb(this.displayName, this.name);
                     break;
                 }
             default:
                 {
-                    this.service = new this.Service.Lightbulb(this.name);
+                    this.service = new this.Service.Lightbulb(this.displayName, this.name);
                     break;
                 }
         }

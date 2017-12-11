@@ -6,7 +6,7 @@ module.exports = class TelldusThermometer extends TelldusAccessory {
 
     getServices() {
         var services = super.getServices();
-        var service  = new this.Service.TemperatureSensor(this.name);
+        var service  = new this.Service.TemperatureSensor(this.displayName, this.name);
         var chars    = service.getCharacteristic(this.Characteristic.CurrentTemperature);
 
         chars.setProps({minValue: -50});

@@ -8,7 +8,7 @@ module.exports = class TelldusMotionSensor extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.MotionSensor(this.name);
+        this.service = new this.Service.MotionSensor(this.displayName, this.name);
 
         var timer = new Timer();
         var service = this.service;
