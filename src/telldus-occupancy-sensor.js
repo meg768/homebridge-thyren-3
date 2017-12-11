@@ -15,6 +15,8 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
         var state = false;
         var timeout = this.config.timeout ? this.config.timeout : 30;
         var characteristic = service.getCharacteristic(this.Characteristic.OccupancyDetected);
+        var ignoreEvents = false;
+        var eventTimer = new Timer();
 
         characteristic.on('get', (callback) => {
             callback(null, Boolean(state));
@@ -22,21 +24,32 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
 
         this.device.on('change', () => {
 
-            setTimeout(() => {
-                this.log('Movement detected on occupancy sensor', this.name);
+            if (!ignoreEvents) {
+                setTimeout(() => {
+                    ignoreEvents = true;
 
-                if (this.config.notification && this.platform.notifications)
-                    this.platform.pushover(this.config.notification);
+                    this.log('Movement detected on occupancy sensor', this.name);
 
-                timer.cancel();
-                characteristic.updateValue(state = true);
+                    if (this.config.notification && this.platform.notifications)
+                        this.platform.pushover(this.config.notification);
 
-                timer.setTimer(timeout * 60 * 1000, () => {
-                    this.log('Resetting movement for occupancy sensor', this.name);
-                    characteristic.updateValue(state = false);
-                });
+                    timer.cancel();
+                    characteristic.updateValue(state = true);
 
-            }, 200);
+                    timer.setTimer(timeout * 60 * 1000, () => {
+                        this.log('Resetting movement for occupancy sensor', this.name);
+                        characteristic.updateValue(state = false);
+                    });
+
+                    eventTimer.setTimer(10000, () => {
+                        ignoreEvents = false;
+                    });
+
+
+
+                }, 200);
+
+            }
         });
     }
 
