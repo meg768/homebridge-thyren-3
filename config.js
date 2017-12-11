@@ -64,6 +64,15 @@
                 "RK-01": {
                     "name": "Ringklocka",
                     "type": "MotionSensor"
+                },
+                "PS-02": {
+                    "name": "Belysning - Snickarrummet"
+                },
+                "SR-01": {
+                    "name": "Skymmningsrelä"
+                },
+                "XMAS-01": {
+                    "name": "Julbelysning"
                 }
             }
 
