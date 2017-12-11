@@ -1,7 +1,7 @@
 {
     "bridge": {
         "name": "Thyren 3",
-        "username": "CC:22:3D:E3:CE:47",
+        "username": "CC:22:3D:E3:CE:57",
         "port": 51826,
         "pin": "031-45-154"
     },
@@ -22,33 +22,35 @@
             ],
 
             "devices": {
+                "FK-02-01": {
+                    "name": "Främre lampor - Biorummet"
+                },
+                "FK-02-02": {
+                    "name": "Bakre lampor - Biorummet"
+                },
                 "RV-01": {
-                    "comment": "Home office",
+                    "name": "Sensor - Kontoret",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-02": {
-                    "comment": "TV room",
+                    "name": "Sensor - Biorummet",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-03": {
-                    "comment": "Living room",
+                    "name": "Sensor - Vardagsrummet",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-04": {
-                    "comment": "Garage",
+                    "name": "Sensor - Snickarrummet",
                     "type": "OccupancySensor",
                     "timeout": 60
                 },
                 "RK-01": {
-                    "comment": "Door bell represented as a motion sensor",
+                    "name": "Ringklocka",
                     "type": "MotionSensor"
-                },
-                "VS-05": {
-                    "comment": "Home security on/off",
-                    "type": "Switch"
                 }
             }
 
