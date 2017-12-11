@@ -29,18 +29,12 @@ module.exports = class TelldusPlatform {
         var accessories = [];
 
         devices.forEach((device) => {
-            var exclude = false;
-            var config = this.config && this.config.devices && this.config.devices[device.name] ? this.config.devices[device.name] : {};
-            var type   = config.type ? config.type.toLowerCase() : 'lightbulb';
 
-            type = type.toLowerCase();
+            var config = this.config && this.config.devices && this.config.devices[device.name] ? this.config.devices[device.name] : undefined;
 
-            if (this.config.exclude) {
-                if (this.config.exclude.indexOf(device.name) >= 0)
-                    exclude = true;
-            }
+            if (config) {
+                var type = config.type ? config.type.toLowerCase() : 'lightbulb';
 
-            if (!exclude) {
                 switch(device.model) {
                     case 'selflearning-switch': {
                         switch(type) {
@@ -84,12 +78,13 @@ module.exports = class TelldusPlatform {
                         accessories.push(new TelldusThermometerHygrometer(this, config, device));
                         break;
                     }
-                    
+
                     default: {
                         this.log('Ignoring device', device.name);
                         break;
                     }
                 }
+
             }
 
         });
