@@ -13,15 +13,28 @@
             "platform": "Thyren 3",
             "name": "Thyren 3",
 
-            "exclude": [
-                "PS-01", "PS-03",
-                "FK-00-01", "FK-00-02", "FK-00-03",
-                "FK-01-01", "FK-01-02", "FK-01-03",
-                "FK-02-03",
-                "Sensor-101"
-            ],
-
             "devices": {
+                "VS-01": {
+                    "name": "Terassen - Utomhus"
+                },
+                "VS-02": {
+                    "name": "Saftblandare - Snickarrummet"
+                },
+                "VS-03": {
+                    "name": "Belysning - Matrummet"
+                },
+                "VS-04": {
+                    "name": "Belysning - Vardagsrummet"
+                },
+                "VS-05": {
+                    "name": "Larm"
+                },
+                "VS-06": {
+                    "name": "Belysning - Kontoret"
+                },
+                "VS-07": {
+                    "name": "Sänglampa - Kontoret"
+                },
                 "FK-02-01": {
                     "name": "Främre lampor - Biorummet"
                 },
