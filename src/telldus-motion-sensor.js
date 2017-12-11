@@ -22,21 +22,24 @@ module.exports = class TelldusMotionSensor extends TelldusAccessory {
 
         this.device.on('change', () => {
 
-            setTimeout(() => {
-                this.log('Movement detected by motion sensor', this.name);
+            if (!state) {
+                setTimeout(() => {
+                    this.log('Movement detected by motion sensor', this.name);
 
-                if (this.config.notification && this.platform.notifications)
-                    this.platform.pushover(this.config.notification);
+                    if (this.config.notification && this.platform.notifications)
+                        this.platform.pushover(this.config.notification);
 
-                timer.cancel();
-                characteristic.updateValue(state = true);
+                    timer.cancel();
+                    characteristic.updateValue(state = true);
 
-                timer.setTimer(timeout * 1000, () => {
-                    this.log('Resetting movement for motion sensor', this.name);
-                    characteristic.updateValue(state = false);
-                });
+                    timer.setTimer(timeout * 1000, () => {
+                        this.log('Resetting movement for motion sensor', this.name);
+                        characteristic.updateValue(state = false);
+                    });
 
-            }, 200);
+                }, 200);
+                
+            }
         });
     }
 
