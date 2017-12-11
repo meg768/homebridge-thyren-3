@@ -43,7 +43,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             if (value) {
 
                 if (this.config.notifications && this.config.notifications.on) {
-                    this.platform.notifications = false;
+                    this.platform.notifications = true;
                     this.platform.pushover(this.config.notifications.on);
 
                 }
