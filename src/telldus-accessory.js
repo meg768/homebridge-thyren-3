@@ -1,40 +1,16 @@
 "use strict";
 
+var HomebridgeAccessory = require('./homebridge-accessory.js');
 
-module.exports = class TelldusAccessory {
+module.exports = class HomebridgeAccessory {
 
     constructor(platform, config, device) {
 
-        if (!device.name)
-            throw new Error('All devices must have a name.');
+        super(platform, {name:device.name, displayName:config.name});
 
-        this.log = platform.log;
-        this.config = config;
-        this.homebridge = platform.homebridge;
         this.device = device;
-        this.Characteristic = platform.homebridge.hap.Characteristic;
-        this.Service = platform.homebridge.hap.Service;
-
-        // A device must have a name present
-        this.name = device.name;
-        this.displayName = this.config.name || device.name;
+        this.config = config;
     }
 
-    identify(callback) {
-        this.log('Identify called for accessory', this.name);
-        callback();
-
-    }
-
-    getServices() {
-        var accessoryInfo = new this.Service.AccessoryInformation();
-
-        accessoryInfo.setCharacteristic(this.Characteristic.Manufacturer, this.device.protocol);
-        accessoryInfo.setCharacteristic(this.Characteristic.Model, this.device.model);
-        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
-
-        return [accessoryInfo];
-
-    }
 
 };
