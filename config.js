@@ -53,24 +53,25 @@
                 "RV-01": {
                     "name": "Sensor på kontoret",
                     "type": "OccupancySensor",
-                    "timeout": 30
+                    "notification": "Rörelse på kontoret.",
+                    "timeout": 1
                 },
                 "RV-02": {
                     "name": "Sensor i biorummet",
                     "type": "OccupancySensor",
                     "timeout": 30,
-                    "notification": "Rörelse i vardagsrummet."
+                    "notification": "Rörelse i biorummet."
                 },
                 "RV-03": {
                     "name": "Sensor i vardagsrummet",
                     "type": "OccupancySensor",
-                    "notification": "Rörelse i vardagsrummet."
+                    "notification": "Rörelse i vardagsrummet.",
                     "timeout": 30
                 },
                 "RV-04": {
                     "name": "Sensor i snickarrummet",
                     "type": "OccupancySensor",
-                    "notification": "Rörelse i snickarrummet."
+                    "notification": "Rörelse i snickarrummet.",
                     "timeout": 60
                 },
                 "RK-01": {
