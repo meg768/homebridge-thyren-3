@@ -40,10 +40,7 @@ module.exports = class TelldusPlatform {
         this.log('Sending message:', message);
 
         push.send({priority:0, message:message}, (error, result) => {
-            if (error)
-                reject(error);
-            else
-                resolve();
+            this.log(error);
         });
     }
 
