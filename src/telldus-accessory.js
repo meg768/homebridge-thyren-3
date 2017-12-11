@@ -2,7 +2,7 @@
 
 var HomebridgeAccessory = require('./homebridge-accessory.js');
 
-module.exports = class HomebridgeAccessory {
+module.exports = class HomebridgeAccessory extends HomebridgeAccessory {
 
     constructor(platform, config, device) {
 
