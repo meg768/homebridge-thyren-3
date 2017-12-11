@@ -12,6 +12,7 @@ module.exports = class HomebridgeAccessory {
             throw new Error('An accessory must have a display name.');
 
         this.log = platform.log;
+        this.platform = platform;
         this.homebridge = platform.homebridge;
         this.Characteristic = platform.homebridge.hap.Characteristic;
         this.Service = platform.homebridge.hap.Service;
