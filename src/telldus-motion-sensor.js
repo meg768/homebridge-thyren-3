@@ -25,6 +25,9 @@ module.exports = class TelldusMotionSensor extends TelldusAccessory {
             setTimeout(() => {
                 this.log('Movement detected by motion sensor', this.name);
 
+                if (this.config.notification && this.platform.notifications)
+                    this.platform.pushover(this.config.notification);
+
                 timer.cancel();
                 characteristic.updateValue(state = true);
 

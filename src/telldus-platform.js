@@ -22,6 +22,7 @@ module.exports = class TelldusPlatform {
         this.config = config;
         this.log = log;
         this.homebridge = homebridge;
+        this.notifications = false;
     }
 
 
@@ -40,7 +41,8 @@ module.exports = class TelldusPlatform {
         this.log('Sending message:', message);
 
         push.send({priority:0, message:message}, (error, result) => {
-            this.log(error);
+            if (this.error)
+                this.log(error);
         });
     }
 

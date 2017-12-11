@@ -41,9 +41,12 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             var result = 0;
 
             if (value) {
-                console.log(this.config);
-                if (this.config.notifications && this.config.notifications.on)
+
+                if (this.config.notifications && this.config.notifications.on) {
+                    this.platform.notifications = false;
                     this.platform.pushover(this.config.notifications.on);
+
+                }
 
                 this.log('Turning on', this.device.name);
                 result = telldus.turnOnSync(this.device.id);
@@ -51,8 +54,11 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             }
 
             else {
-                if (this.config.notifications && this.config.notifications.off)
+                if (this.config.notifications && this.config.notifications.off) {
+                    this.platform.notifications = false;
                     this.platform.pushover(this.config.notifications.off);
+
+                }
 
                 this.log('Turning off', this.device.name);
                 result = telldus.turnOffSync(this.device.id);
