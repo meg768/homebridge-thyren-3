@@ -15,49 +15,49 @@
 
             "devices": {
                 "VS-01": {
-                    "name": "Terassen - Utomhus"
+                    "name": "Terassen"
                 },
                 "VS-02": {
-                    "name": "Saftblandare - Snickarrummet"
+                    "name": "Saftblandare"
                 },
                 "VS-03": {
-                    "name": "Belysning - Matrummet"
+                    "name": "Belysning i matrummet"
                 },
                 "VS-04": {
-                    "name": "Belysning - Vardagsrummet"
+                    "name": "Belysning i vardagsrummet"
                 },
                 "VS-05": {
                     "name": "Larm"
                 },
                 "VS-06": {
-                    "name": "Belysning - Kontoret"
+                    "name": "Belysning på kontoret"
                 },
                 "VS-07": {
-                    "name": "Sänglampa - Kontoret"
+                    "name": "Sänglampa"
                 },
                 "FK-02-01": {
-                    "name": "Främre lampor - Biorummet"
+                    "name": "Främre lampor i biorummet"
                 },
                 "FK-02-02": {
-                    "name": "Bakre lampor - Biorummet"
+                    "name": "Bakre lampor i biorummet"
                 },
                 "RV-01": {
-                    "name": "Sensor - Kontoret",
+                    "name": "Sensor på kontoret",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-02": {
-                    "name": "Sensor - Biorummet",
+                    "name": "Sensor i biorummet",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-03": {
-                    "name": "Sensor - Vardagsrummet",
+                    "name": "Sensor i vardagsrummet",
                     "type": "OccupancySensor",
                     "timeout": 30
                 },
                 "RV-04": {
-                    "name": "Sensor - Snickarrummet",
+                    "name": "Sensor i snickarrummet",
                     "type": "OccupancySensor",
                     "timeout": 60
                 },
@@ -66,7 +66,7 @@
                     "type": "MotionSensor"
                 },
                 "PS-02": {
-                    "name": "Belysning - Snickarrummet"
+                    "name": "Belysning i snickarrummet"
                 },
                 "SR-01": {
                     "name": "Skymmningsrelä"
