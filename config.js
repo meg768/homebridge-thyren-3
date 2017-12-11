@@ -79,6 +79,9 @@
                     "type": "MotionSensor",
                     "notification": "Det ringer på dörren."
                 },
+                "PS-02": {
+                    "name": "Belysning i snickarrummet"
+                },
                 "SR-01": {
                     "name": "Skymmningsrelä"
                 },
