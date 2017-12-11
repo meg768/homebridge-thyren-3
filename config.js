@@ -13,6 +13,11 @@
             "platform": "Thyren 3",
             "name": "Thyren 3",
 
+            "pushover": {
+                "user": "u1mrd1fpevhm8opcbhywcmmdst7qja",
+                "token": "amctdgksyefuqxavyuttsh2pcg4ejp"
+            },
+
             "devices": {
                 "VS-01": {
                     "name": "Terassen"

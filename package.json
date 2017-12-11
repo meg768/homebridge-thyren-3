@@ -27,7 +27,8 @@
   "dependencies": {
     "yow": "^1.0.85",
     "sprintf-js": "^1.0.3",
+    "pushover-notifications": "^0.2.4",
     "telldus": "^1.1.0"
-    
+
   }
 }

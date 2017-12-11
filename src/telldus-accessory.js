@@ -16,7 +16,8 @@ module.exports = class TelldusAccessory {
         this.Service = platform.homebridge.hap.Service;
 
         // A device must have a name present
-        this.name = this.config.name || device.name;
+        this.name = device.name;
+        this.displayName = this.config.name || device.name;
     }
 
     identify(callback) {
