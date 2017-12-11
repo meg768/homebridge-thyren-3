@@ -31,7 +31,7 @@ module.exports = class HomebridgeAccessory {
 
         accessoryInfo.setCharacteristic(this.Characteristic.Manufacturer, 'Thyrén 3');
         accessoryInfo.setCharacteristic(this.Characteristic.Model, 'Thyrén 3');
-        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
+        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.name);
 
         return [accessoryInfo];
 
