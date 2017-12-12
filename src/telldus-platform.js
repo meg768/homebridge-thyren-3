@@ -1,6 +1,6 @@
 "use strict";
 
-var tellstick = require('./tellstick.js');
+var telldus = require('telldus');
 var TelldusSwitch = require('./telldus-switch.js');
 var TelldusNotificationSwitch = require('./telldus-notification-switch.js');
 var TelldusAlertSwitch = require('./telldus-alert-switch.js');
@@ -10,6 +10,7 @@ var TelldusDoorbell = require('./telldus-doorbell.js');
 var TelldusThermometer = require('./telldus-thermometer.js');
 var TelldusHygrometer = require('./telldus-hygrometer.js');
 var TelldusThermometerHygrometer = require('./telldus-thermometer-hygrometer.js');
+
 
 var Pushover = require('pushover-notifications');
 
@@ -26,6 +27,8 @@ module.exports = class TelldusPlatform {
         this.homebridge = homebridge;
         this.notifications = false;
         this.alerts = true;
+        this.devices = [];
+
     }
 
     notify(message) {
