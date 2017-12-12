@@ -23,12 +23,12 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
             var result = 0;
 
-            if (this.config.type.toLowerCase() == 'alertswitch') {
+            if (this.config.type && this.config.type.toLowerCase() == 'alertswitch') {
                 this.platform.alerts = value;
                 this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
 
-            if (this.config.type.toLowerCase() == 'notificationswitch') {
+            if (this.config.type && this.config.type.toLowerCase() == 'notificationswitch') {
                 this.platform.notifications = value;
                 this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
