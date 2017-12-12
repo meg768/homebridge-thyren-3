@@ -2,6 +2,7 @@
 var TelldusAccessory = require('./telldus-accessory.js');
 var telldus = require('telldus');
 var isString = require('yow/is').isString;
+var sprintf = require('yow/sprintf');
 
 module.exports = class TelldusSwitch extends TelldusAccessory {
 
@@ -24,12 +25,12 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
             if (this.config.type.toLowerCase() == 'alertswitch') {
                 this.platform.alerts = value;
-                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av');
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
 
             if (this.config.type.toLowerCase() == 'notificationswitch') {
                 this.platform.notifications = value;
-                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av');
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
 
             if (value) {
