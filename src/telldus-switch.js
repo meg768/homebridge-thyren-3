@@ -2,7 +2,6 @@
 var TelldusAccessory = require('./telldus-accessory.js');
 var telldus = require('telldus');
 var isString = require('yow/is').isString;
-var sprintf = require('yow/sprintf');
 
 module.exports = class TelldusSwitch extends TelldusAccessory {
 
@@ -10,63 +9,28 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         super(platform, config, device);
 
         this.service = new this.Service.Switch(this.displayName, this.name);
+        this.state   = this.readState();
 
         var characteristic = this.service.getCharacteristic(this.Characteristic.On);
-        var state = this.device.state == 'ON';
-        characteristic.updateValue(state);
+
+        characteristic.updateValue(this.state);
 
         characteristic.on('get', (callback) => {
-            state = this.device.state == 'ON';
-            callback(null, state);
+            callback(null, this.getState());
         });
 
         characteristic.on('set', (value, callback, context) => {
-
-            var result = 0;
-
-            if (this.config.type && this.config.type.toLowerCase() == 'alertswitch') {
-                this.platform.alerts = value;
-                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
-            }
-
-            if (this.config.type && this.config.type.toLowerCase() == 'notificationswitch') {
-                this.platform.notifications = value;
-                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
-            }
-
-            if (value) {
-                this.log('Turning on', this.device.name);
-
-                this.platform.alert(this.config.alertOn);
-                this.platform.notify(this.config.notifyOn);
-
-                result = telldus.turnOnSync(this.device.id);
-                result = telldus.turnOnSync(this.device.id);
-            }
-
-            else {
-                this.log('Turning off', this.device.name);
-
-                this.platform.alert(this.config.alertOff);
-                this.platform.notify(this.config.notifyOff);
-
-                result = telldus.turnOffSync(this.device.id);
-                result = telldus.turnOffSync(this.device.id);
-            }
-
-            this.log('Result of switching on/off %s (%d).', this.device.name, result);
-
+            this.setState(value);
             callback();
         });
 
         this.device.on('change', () => {
 
-            var newState = this.device.state == 'ON';
+            var newState = this.readState();
 
-            // Indicate movement
-            if (state != newState) {
+            if (this.state != newState) {
                 this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, newState);
-                characteristic.updateValue(state = newState);
+                characteristic.updateValue(this.state = newState);
                 this.log('Done.');
             }
         });
@@ -74,6 +38,41 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
     }
 
+    getState() {
+        return this.state;
+    }
+
+    readState() {
+         return this.device.state == 'ON';
+    }
+
+    setState(state) {
+        var result = 0;
+
+        if (state) {
+            this.log('Turning on', this.device.name);
+
+            this.platform.alert(this.config.alertOn);
+            this.platform.notify(this.config.notifyOn);
+
+            result = telldus.turnOnSync(this.device.id);
+            result = telldus.turnOnSync(this.device.id);
+        }
+
+        else {
+            this.log('Turning off', this.device.name);
+
+            this.platform.alert(this.config.alertOff);
+            this.platform.notify(this.config.notifyOff);
+
+            result = telldus.turnOffSync(this.device.id);
+            result = telldus.turnOffSync(this.device.id);
+        }
+
+        this.log('Result of switching on/off %s (%d).', this.device.name, result);
+
+        this.state = value;
+    }
 
 
     getServices() {

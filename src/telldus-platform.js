@@ -2,6 +2,8 @@
 
 var tellstick = require('./tellstick.js');
 var TelldusSwitch = require('./telldus-switch.js');
+var TelldusNotificationSwitch = require('./telldus-notification-switch.js');
+var TelldusAlertSwitch = require('./telldus-alert-switch.js');
 var TelldusMotionSensor = require('./telldus-motion-sensor.js');
 var TelldusOccupancySensor = require('./telldus-occupancy-sensor.js');
 var TelldusDoorbell = require('./telldus-doorbell.js');
@@ -67,7 +69,7 @@ module.exports = class TelldusPlatform {
                 if (this.error)
                     this.log(error);
             });
-            
+
         }
     }
 
@@ -89,6 +91,14 @@ module.exports = class TelldusPlatform {
                         switch(type) {
                             case 'motionsensor': {
                                 accessories.push(new TelldusMotionSensor(this, config, device));
+                                break;
+                            }
+                            case 'alertswitch': {
+                                accessories.push(new TelldusAlertSwitch(this, config, device));
+                                break;
+                            }
+                            case 'notificationswitch': {
+                                accessories.push(new TelldusNotificationSwitch(this, config, device));
                                 break;
                             }
                             case 'occupancysensor': {
