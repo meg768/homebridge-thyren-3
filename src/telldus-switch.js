@@ -2,6 +2,7 @@
 var TelldusAccessory = require('./telldus-accessory.js');
 var telldus = require('telldus');
 var isString = require('yow/is').isString;
+var sprintf = require('yow/sprintf');
 
 module.exports = class TelldusSwitch extends TelldusAccessory {
 
