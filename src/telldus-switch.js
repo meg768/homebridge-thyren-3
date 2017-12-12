@@ -9,7 +9,8 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.Switch(this.name);
+        this.service = new this.Service.Switch(this.displayName, this.name);
+
         var characteristic = this.service.getCharacteristic(this.Characteristic.On);
         var state = this.device.state == 'ON';
         characteristic.updateValue(state);
@@ -23,14 +24,16 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
             var result = 0;
 
+            this.log('SET:', context);
+            
             if (this.config.type && this.config.type.toLowerCase() == 'alertswitch') {
                 this.platform.alerts = value;
-                this.platform.pushover(sprintf('%s %s.', this.name, value ? 'på' : 'av'));
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
 
             if (this.config.type && this.config.type.toLowerCase() == 'notificationswitch') {
                 this.platform.notifications = value;
-                this.platform.pushover(sprintf('%s %s.', this.name, value ? 'på' : 'av'));
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
             }
 
             if (value) {

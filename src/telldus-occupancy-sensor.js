@@ -8,7 +8,7 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.OccupancySensor(this.name);
+        this.service = new this.Service.OccupancySensor(this.displayName, this.name);
 
         var timer = new Timer();
         var service = this.service;
