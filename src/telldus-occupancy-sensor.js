@@ -25,22 +25,18 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
         this.device.on('change', () => {
 
             if (!state) {
-                setTimeout(() => {
-                    this.log('Movement detected on occupancy sensor', this.name);
+                this.log('Movement detected on occupancy sensor', this.name);
 
-                    this.platform.notify(this.config.notify);
-                    this.platform.alert(this.config.alert);
+                this.platform.notify(this.config.notify);
+                this.platform.alert(this.config.alert);
 
-                    timer.cancel();
-                    characteristic.updateValue(state = true);
+                timer.cancel();
+                characteristic.updateValue(state = true);
 
-                    timer.setTimer(timeout * 60 * 1000, () => {
-                        this.log('Resetting movement for occupancy sensor', this.name);
-                        characteristic.updateValue(state = false);
-                    });
-
-                }, 200);
-
+                timer.setTimer(timeout * 60 * 1000, () => {
+                    this.log('Resetting movement for occupancy sensor', this.name);
+                    characteristic.updateValue(state = false);
+                });
             }
         });
     }
