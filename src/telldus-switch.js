@@ -40,6 +40,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
                 this.platform.notify(this.config.notifyOn);
 
                 result = telldus.turnOnSync(this.device.id);
+                result = telldus.turnOnSync(this.device.id);
             }
 
             else {
