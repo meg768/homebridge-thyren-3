@@ -32,9 +32,9 @@ module.exports = class TelldusPlatform {
 
         telldus.getDevicesSync().forEach((device) => {
             var config = this.config && this.config.devices && this.config.devices[device.name] ? this.config.devices[device.name] : undefined;
-            var type = config && config.type || 'Switch';
+            var type = (config && config.type) || 'Switch';
 
-            if (type && device.type == 'DEVICE') {
+            if (config && type && device.type == 'DEVICE') {
                 switch(type.toLowerCase()) {
                     case 'motionsensor': {
                         this.accessories.push(new TelldusMotionSensor(this, config, device));
