@@ -34,7 +34,8 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         characteristic.updateValue(state);
 
         characteristic.on('get', (callback) => {
-            callback(null, this.device.state == 'ON');
+            state = this.device.state == 'ON';
+            callback(null, state);
         });
 
         characteristic.on('set', (value, callback, context) => {
@@ -79,7 +80,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             if (state != newState) {
                 this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, newState);
                 characteristic.updateValue(newState);
-                this.log('Done');
+                this.log('Done.');
             }
         });
 
