@@ -17,7 +17,6 @@ module.exports = class TelldusAccessory  {
         this.Characteristic = platform.homebridge.hap.Characteristic;
         this.Service = platform.homebridge.hap.Service;
         this.name = device.name;
-        this.displayName = config.name;
         this.device = device;
         this.config = config;
     }

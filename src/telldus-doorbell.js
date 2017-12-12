@@ -8,7 +8,7 @@ module.exports = class TelldusDoorbell extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.Doorbell(this.displayName, this.name);
+        this.service = new this.Service.Doorbell(this.name);
 
         var timer = null;
         var service = this.service;
