@@ -24,8 +24,6 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
             var result = 0;
 
-            this.log('SET:', context);
-            
             if (this.config.type && this.config.type.toLowerCase() == 'alertswitch') {
                 this.platform.alerts = value;
                 this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av'));
