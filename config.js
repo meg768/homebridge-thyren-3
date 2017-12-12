@@ -33,10 +33,7 @@
                 },
                 "VS-05": {
                     "name": "Larm",
-                    "notifications": {
-                        "on": "Larm aktiverat.",
-                        "off": "Larm avaktiverat."
-                    }
+                    "type": "NotificationSwitch"
                 },
                 "VS-06": {
                     "name": "Belysning på kontoret"
@@ -53,37 +50,39 @@
                 "RV-01": {
                     "name": "Sensor på kontoret",
                     "type": "OccupancySensor",
-                    "notification": "Rörelse på kontoret.",
+                    "notify": "Rörelse på kontoret.",
                     "timeout": 1
                 },
                 "RV-02": {
                     "name": "Sensor i biorummet",
                     "type": "OccupancySensor",
                     "timeout": 30,
-                    "notification": "Rörelse i biorummet."
+                    "notify": "Rörelse i biorummet."
                 },
                 "RV-03": {
                     "name": "Sensor i vardagsrummet",
                     "type": "OccupancySensor",
-                    "notification": "Rörelse i vardagsrummet.",
+                    "notify": "Rörelse i vardagsrummet.",
                     "timeout": 30
                 },
                 "RV-04": {
                     "name": "Sensor i snickarrummet",
                     "type": "OccupancySensor",
-                    "notification": "Rörelse i snickarrummet.",
+                    "notify": "Rörelse i snickarrummet.",
                     "timeout": 60
                 },
                 "RK-01": {
                     "name": "Ringklocka",
                     "type": "MotionSensor",
-                    "notify": {
-                        "message": "Det ringer på dörren.",
-                        "priority": "high"
-                    }
+                    "alert": "Det ringer på dörren."
                 },
                 "PS-02": {
                     "name": "Belysning i snickarrummet"
+                },
+                "PS-03": {
+                    "name": "Meddelanden",
+                    "type": "AlertSwitch"
+
                 },
                 "SR-01": {
                     "name": "Skymmningsrelä"

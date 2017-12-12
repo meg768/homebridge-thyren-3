@@ -23,27 +23,52 @@ module.exports = class TelldusPlatform {
         this.log = log;
         this.homebridge = homebridge;
         this.notifications = false;
+        this.alerts = true;
     }
 
+    notify(message) {
+        try {
+            if (this.notifications)
+                this.pushover(message);
+
+        }
+        catch (error) {
+            this.log(error);
+        }
+    }
+
+    alert(message) {
+        try {
+            if (this.alerts)
+                this.pushover(message);
+
+        }
+        catch (error) {
+            this.log(error);
+        }
+    }
 
     pushover(message) {
-        if (!this.config.pushover)
-            throw new Error('You must configure Pushover credentials.');
+        if (message) {
+            if (!this.config.pushover)
+                throw new Error('You must configure Pushover credentials.');
 
-        if (!this.config.pushover.user)
-            throw new Error('You must configure Pushover user.');
+            if (!this.config.pushover.user)
+                throw new Error('You must configure Pushover user.');
 
-        if (!this.config.pushover.token)
-            throw new Error('You must configure Pushover token.');
+            if (!this.config.pushover.token)
+                throw new Error('You must configure Pushover token.');
 
-        var push = new Pushover(this.config.pushover);
+            var push = new Pushover(this.config.pushover);
 
-        this.log('Sending message:', message);
+            this.log('Sending message:', message);
 
-        push.send({priority:0, message:message}, (error, result) => {
-            if (this.error)
-                this.log(error);
-        });
+            push.send({priority:0, message:message}, (error, result) => {
+                if (this.error)
+                    this.log(error);
+            });
+            
+        }
     }
 
     accessories(callback) {

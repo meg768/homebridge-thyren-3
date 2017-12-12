@@ -8,28 +8,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.type = this.config.type ? this.config.type.toLowerCase() : 'lightbulb';
-        this.type = 'switch';
-        this.log('Creating new service for %s as type %s.', this.name, this.type);
-
-        switch (this.type) {
-            case 'switch':
-                {
-                    this.service = new this.Service.Switch(this.displayName, this.name);
-                    break;
-                }
-            case 'lightbulb':
-                {
-                    this.service = new this.Service.Lightbulb(this.displayName, this.name);
-                    break;
-                }
-            default:
-                {
-                    this.service = new this.Service.Lightbulb(this.displayName, this.name);
-                    break;
-                }
-        }
-
+        this.service = new this.Service.Switch(this.displayName, this.name);
         var characteristic = this.service.getCharacteristic(this.Characteristic.On);
         var state = this.device.state == 'ON';
         characteristic.updateValue(state);
@@ -43,26 +22,31 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
             var result = 0;
 
+            if (this.config.type.toLowerCase() == 'alertswitch') {
+                this.platform.alerts = value;
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av');
+            }
+
+            if (this.config.type.toLowerCase() == 'notificationswitch') {
+                this.platform.notifications = value;
+                this.platform.pushover(sprintf('%s %s.', this.displayName, value ? 'på' : 'av');
+            }
+
             if (value) {
-
-                if (this.config.notifications && this.config.notifications.on) {
-                    this.platform.notifications = true;
-                    this.platform.pushover(this.config.notifications.on);
-
-                }
-
                 this.log('Turning on', this.device.name);
+
+                this.platform.alert(this.config.alertOn);
+                this.platform.notify(this.config.notifyOn);
+
                 result = telldus.turnOnSync(this.device.id);
             }
 
             else {
-                if (this.config.notifications && this.config.notifications.off) {
-                    this.platform.notifications = false;
-                    this.platform.pushover(this.config.notifications.off);
-
-                }
-
                 this.log('Turning off', this.device.name);
+
+                this.platform.alert(this.config.alertOff);
+                this.platform.notify(this.config.notifyOff);
+
                 result = telldus.turnOffSync(this.device.id);
             }
 

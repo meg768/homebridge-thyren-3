@@ -26,8 +26,8 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
                 setTimeout(() => {
                     this.log('Movement detected on occupancy sensor', this.name);
 
-                    if (this.config.notification && this.platform.notifications)
-                        this.platform.pushover(this.config.notification);
+                    this.platform.notify(this.config.notify);
+                    this.platform.alert(this.config.alert);
 
                     timer.cancel();
                     characteristic.updateValue(state = true);
