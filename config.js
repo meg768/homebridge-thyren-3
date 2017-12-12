@@ -77,7 +77,10 @@
                 "RK-01": {
                     "name": "Ringklocka",
                     "type": "MotionSensor",
-                    "notification": "Det ringer på dörren."
+                    "notify": {
+                        "message": "Det ringer på dörren.",
+                        "priority": "high"
+                    }
                 },
                 "PS-02": {
                     "name": "Belysning i snickarrummet"
