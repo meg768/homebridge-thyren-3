@@ -1,6 +1,7 @@
 "use strict";
 
 var telldus = require('telldus');
+var tellstick = require('./tellstick.js');
 var TelldusSwitch = require('./telldus-switch.js');
 var TelldusNotificationSwitch = require('./telldus-notification-switch.js');
 var TelldusAlertSwitch = require('./telldus-alert-switch.js');
