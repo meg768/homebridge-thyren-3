@@ -52,8 +52,6 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
                 this.log('Turning on', this.device.name);
                 result = telldus.turnOnSync(this.device.id);
-                //result = telldus.turnOnSync(this.device.id);
-
             }
 
             else {
@@ -79,7 +77,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             // Indicate movement
             if (state != newState) {
                 this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, newState);
-                characteristic.updateValue(newState);
+                characteristic.updateValue(state = newState);
                 this.log('Done.');
             }
         });
