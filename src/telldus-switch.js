@@ -30,7 +30,8 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         }
 
         var characteristic = this.service.getCharacteristic(this.Characteristic.On);
-        characteristic.updateValue(this.device.state == 'ON');
+        var state = this.device.state == 'ON';
+        characteristic.updateValue(state);
 
         characteristic.on('get', (callback) => {
             callback(null, this.device.state == 'ON');
@@ -50,7 +51,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
                 this.log('Turning on', this.device.name);
                 result = telldus.turnOnSync(this.device.id);
-                result = telldus.turnOnSync(this.device.id);
+                //result = telldus.turnOnSync(this.device.id);
 
             }
 
@@ -72,12 +73,14 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
 
         this.device.on('change', () => {
 
-            var state = this.device.state == 'ON';
+            var newState = this.device.state == 'ON';
 
             // Indicate movement
-            this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, state ? 'ON' : 'OFF');
-
-            characteristic.updateValue(state);
+            if (state != newState) {
+                this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, newState);
+                characteristic.updateValue(newState);
+                this.log('Done');
+            }
         });
 
 
