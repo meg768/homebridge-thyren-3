@@ -28,7 +28,7 @@ module.exports = class TelldusPlatform {
         this.homebridge = homebridge;
         this.notifications = false;
         this.alerts = true;
-        this.accessories = [];
+        this.devices = [];
 
         telldus.getDevicesSync().forEach((device) => {
             var config = this.config && this.config.devices && this.config.devices[device.name] ? this.config.devices[device.name] : undefined;
@@ -37,23 +37,23 @@ module.exports = class TelldusPlatform {
             if (config && type && device.type == 'DEVICE') {
                 switch(type.toLowerCase()) {
                     case 'motionsensorX': {
-                        this.accessories.push(new TelldusMotionSensor(this, config, device));
+                        this.devices.push(new TelldusMotionSensor(this, config, device));
                         break;
                     }
                     case 'alertswitch': {
-                        this.accessories.push(new TelldusAlertSwitch(this, config, device));
+                        this.devices.push(new TelldusAlertSwitch(this, config, device));
                         break;
                     }
                     case 'notificationswitch': {
-                        this.accessories.push(new TelldusNotificationSwitch(this, config, device));
+                        this.devices.push(new TelldusNotificationSwitch(this, config, device));
                         break;
                     }
                     case 'occupancysensor': {
-                        this.accessories.push(new TelldusOccupancySensor(this, config, device));
+                        this.devices.push(new TelldusOccupancySensor(this, config, device));
                         break;
                     }
                     case 'switch': {
-                        this.accessories.push(new TelldusSwitch(this, config, device));
+                        this.devices.push(new TelldusSwitch(this, config, device));
                         break;
                     }
                 }
@@ -65,11 +65,11 @@ module.exports = class TelldusPlatform {
 
         telldus.addDeviceEventListener((id, status) => {
 
-            var accessory = this.findAccessory(id);
+            var device = this.findDevice(id);
 
-            if (accessory != undefined) {
+            if (device != undefined) {
                 if (status.name) {
-                    accessory.stateChanged(status.name == 'ON');
+                    device.stateChanged(status.name == 'ON');
                 }
 
             } else {
@@ -79,18 +79,18 @@ module.exports = class TelldusPlatform {
 
     }
 
-    findAccessory(id) {
+    findDevice(id) {
 
-        var accessories = this.accessories;
+        var devices = this.devices;
 
-        for (var i = 0; i < accessories.length; i++) {
-            var accessory = accessories[i];
+        for (var i = 0; i < devices.length; i++) {
+            var device = devices[i];
 
-            if (id == accessory.device.id)
-                return accessory;
+            if (id == device.device.id)
+                return device;
 
-            if (id == accessory.device.name) {
-                return accessory;
+            if (id == device.device.name) {
+                return device;
             }
         };
     }
@@ -141,7 +141,7 @@ module.exports = class TelldusPlatform {
     }
 
     accessories(callback) {
-        callback(this.accessories);
+        callback(this.devices);
 
     }
 }
