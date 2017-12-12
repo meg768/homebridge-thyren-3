@@ -19,8 +19,8 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             callback(null, this.getState());
         });
 
-        characteristic.on('set', (value, callback, context) => {
-            this.setState(value);
+        characteristic.on('set', (state, callback, context) => {
+            this.setState(state);
             callback();
         });
 
@@ -46,32 +46,39 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
          return this.device.state == 'ON';
     }
 
+    turnOn() {
+        this.log('Turning on', this.device.name);
+
+        this.platform.alert(this.config.alertOn);
+        this.platform.notify(this.config.notifyOn);
+
+        telldus.turnOnSync(this.device.id);
+        telldus.turnOnSync(this.device.id);
+
+        this.log(sprintf('Device %s turned on.', this.device.name));
+
+        this.state = true;
+    }
+
+    turnOff() {
+        this.log('Turning off', this.device.name);
+
+        this.platform.alert(this.config.alertOff);
+        this.platform.notify(this.config.notifyOff);
+
+        telldus.turnOffSync(this.device.id);
+        telldus.turnOffSync(this.device.id);
+
+        this.log(sprintf('Device %s turned off.', this.device.name));
+
+        this.state = false;
+    }
+
     setState(state) {
-        var result = 0;
-
-        if (state) {
-            this.log('Turning on', this.device.name);
-
-            this.platform.alert(this.config.alertOn);
-            this.platform.notify(this.config.notifyOn);
-
-            result = telldus.turnOnSync(this.device.id);
-            result = telldus.turnOnSync(this.device.id);
-        }
-
-        else {
-            this.log('Turning off', this.device.name);
-
-            this.platform.alert(this.config.alertOff);
-            this.platform.notify(this.config.notifyOff);
-
-            result = telldus.turnOffSync(this.device.id);
-            result = telldus.turnOffSync(this.device.id);
-        }
-
-        this.log('Result of switching on/off %s (%d).', this.device.name, result);
-
-        this.state = value;
+        if (state)
+            this.turnOn();
+        else
+            this.turnOff();
     }
 
 
