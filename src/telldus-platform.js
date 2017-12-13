@@ -32,7 +32,7 @@ module.exports = class TelldusPlatform {
 
         telldus.getDevicesSync().forEach((item) => {
             var device = {};
-
+            console.log(item);
             device.id = item.id;
             device.name = item.name;
             device.type = 'device';
