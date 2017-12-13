@@ -8,10 +8,11 @@ module.exports = class NotificationSwitch extends Switch {
     setState(state) {
         var name = this.services.switch.getCharacteristic(this.Characteristic.Name);
 
-        name.getValue((error, value) => {
+        name.getValue((error, name) => {
             if (!error) {
+                this.log('NAME IS', name);
                 this.platform.notifications = state;
-                this.platform.pushover(sprintf('%s %s.', value, state ? 'på' : 'av'));
+                this.platform.pushover(sprintf('%s %s.', name, state ? 'på' : 'av'));
 
             }
         });
