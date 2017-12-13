@@ -11,7 +11,7 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
         this.state = false;
         this.service = new this.Service.OccupancySensor(this.displayName, this.device.name);
         this.timer = new Timer();
-        this.characteristic = service.getCharacteristic(this.Characteristic.OccupancyDetected);
+        this.characteristic = this.service.getCharacteristic(this.Characteristic.OccupancyDetected);
 
         this.characteristic.updateValue(this.state);
 
