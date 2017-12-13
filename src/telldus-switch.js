@@ -10,41 +10,41 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         super(platform, config, device);
 
         this.service = new this.Service.Switch(this.displayName, this.name);
-        this.state   = this.readState();
+        this.state   = this.device.state;
+        this.characteristic = this.service.getCharacteristic(this.Characteristic.On);
 
-        var characteristic = this.service.getCharacteristic(this.Characteristic.On);
+        this.characteristic.updateValue(this.device.state);
 
-        characteristic.updateValue(this.state);
-
-        characteristic.on('get', (callback) => {
+        this.characteristic.on('get', (callback) => {
             callback(null, this.getState());
         });
 
-        characteristic.on('set', (state, callback, context) => {
+        this.characteristic.on('set', (state, callback, context) => {
             this.setState(state);
             callback();
         });
 
-        this.device.on('change', () => {
+    }
 
-            var newState = this.readState();
+    stateChanged() {
+        super.stateChanged();
 
-            if (this.state != newState) {
-                this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, newState);
-                characteristic.updateValue(this.state = newState);
-                this.log('Done.');
-            }
-        });
-
-
+        if (this.state != this.device.state) {
+            this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, this.device.state);
+            characteristic.updateValue(this.state = this.device.state);
+            this.log('Done.');
+        }
     }
 
     getState() {
         return this.state;
     }
 
-    readState() {
-         return this.device.state == 'ON';
+    setState(state) {
+        if (state)
+            this.turnOn();
+        else
+            this.turnOff();
     }
 
     turnOn() {
@@ -75,12 +75,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         this.state = false;
     }
 
-    setState(state) {
-        if (state)
-            this.turnOn();
-        else
-            this.turnOff();
-    }
+
 
 
     getServices() {

@@ -28,9 +28,95 @@ module.exports = class TelldusPlatform {
         this.homebridge = homebridge;
         this.notifications = false;
         this.alerts = true;
-        this.devices = [];
+        this.items = [];
+
+        telldus.getDevicesSync().forEach((item) => {
+
+
+            var device = {};
+
+            device.id = item.id;
+            device.name = item.name;
+            device.type = 'device';
+            device.protocol = item.protocol;
+            device.model = item.model;
+
+            if (item.status)
+                device.state = item.status.name == 'ON';
+
+            var config = this.config[device.name];
+
+            if (config) {
+                var type = config.type ? config.type : 'switch';
+
+                switch(type.toLowerCase()) {
+                    case 'motionsensorX': {
+                        this.items.push(new TelldusMotionSensor(this, config, device));
+                        break;
+                    }
+                    case 'alertswitch': {
+                        this.items.push(new TelldusAlertSwitch(this, config, device));
+                        break;
+                    }
+                    case 'notificationswitch': {
+                        this.items.push(new TelldusNotificationSwitch(this, config, device));
+                        break;
+                    }
+                    case 'occupancysensor': {
+                        this.items.push(new TelldusOccupancySensor(this, config, device));
+                        break;
+                    }
+                    case 'doorbell': {
+                        this.items.push(new TelldusDoorbell(this, config, device));
+                        break;
+                    }
+                    default: {
+                        this.items.push(new TelldusSwitch(this, config, device));
+                        break;
+                    }
+                }
+                break;
+
+            }
+        });
+
+
+        telldus.addDeviceEventListener((id, status) => {
+
+            var item = this.findItem(id);
+
+            if (item != undefined) {
+                this.log('Device event:', id, status);
+
+                if (status && status.name)
+                    item.device.state = status.name == 'ON';
+
+                item.stateChanged();
+
+                debug('Device event:', device);
+
+            } else {
+                debug('Device', id, 'not found.');
+            }
+        });
+
 
     }
+
+    findItem(id) {
+
+        for (var i = 0; i < this.items.length; i++) {
+            var item = this.items[i];
+
+            if (id == item.device.id)
+                return item;
+
+            if (id == item.device.name) {
+                return item;
+            }
+        };
+    }
+
 
     notify(message) {
         try {
@@ -78,83 +164,6 @@ module.exports = class TelldusPlatform {
     }
 
     accessories(callback) {
-        this.log('Loading accessories...');
-
-        var devices = tellstick.getDevices();
-        var accessories = [];
-
-        devices.forEach((device) => {
-
-            var config = this.config && this.config.devices && this.config.devices[device.name] ? this.config.devices[device.name] : undefined;
-
-            if (config) {
-                var type = config.type ? config.type.toLowerCase() : 'lightbulb';
-
-                switch(device.model) {
-                    case 'selflearning-switch': {
-                        switch(type) {
-                            case 'motionsensor': {
-                                accessories.push(new TelldusMotionSensor(this, config, device));
-                                break;
-                            }
-                            case 'alertswitch': {
-                                accessories.push(new TelldusAlertSwitch(this, config, device));
-                                break;
-                            }
-                            case 'notificationswitch': {
-                                accessories.push(new TelldusNotificationSwitch(this, config, device));
-                                break;
-                            }
-                            case 'occupancysensor': {
-                                accessories.push(new TelldusOccupancySensor(this, config, device));
-                                break;
-                            }
-                            case 'doorbell': {
-                                accessories.push(new TelldusDoorbell(this, config, device));
-                                break;
-                            }
-                            default: {
-                                accessories.push(new TelldusSwitch(this, config, device));
-                            }
-                        }
-                        break;
-                    }
-
-                    case 'codeswitch': {
-                        accessories.push(new TelldusSwitch(this, config, device));
-                        break;
-                    }
-
-                    case 'humidity': {
-                        accessories.push(new TelldusHygrometer(this, config, device));
-                        break;
-                    }
-
-                    case 'EA4C':
-                    case 'temperature': {
-                        accessories.push(new TelldusThermometer(this, config, device));
-                        break;
-                    }
-
-                    case '1A2D':
-                    case 'temperaturehumidity': {
-                        accessories.push(new TelldusThermometerHygrometer(this, config, device));
-                        break;
-                    }
-
-                    default: {
-                        this.log('Ignoring device', device.name);
-                        break;
-                    }
-                }
-
-            }
-
-        });
-
-
-
-        callback(accessories);
-
+        callback(this.items);
     }
 }

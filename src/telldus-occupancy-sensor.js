@@ -8,45 +8,43 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.OccupancySensor(this.displayName, this.name);
+        this.state = false;
+        this.service = new this.Service.OccupancySensor(this.displayName, this.device.name);
+        this.timer = new Timer();
+        this.characteristic = service.getCharacteristic(this.Characteristic.OccupancyDetected);
 
-        var timer = new Timer();
-        var service = this.service;
-        var state = false;
-        var timeout = this.config.timeout ? this.config.timeout : 30;
-        var characteristic = service.getCharacteristic(this.Characteristic.OccupancyDetected);
+        this.characteristic.updateValue(this.state);
 
-        characteristic.updateValue(state);
-
-        characteristic.on('get', (callback) => {
-            callback(null, Boolean(state));
+        this.characteristic.on('get', (callback) => {
+            callback(null, this.state);
         });
 
-        this.device.on('change', () => {
-
-            if (!state) {
-                this.log('Movement detected on occupancy sensor', this.name);
-
-                this.platform.notify(this.config.notify);
-                this.platform.alert(this.config.alert);
-
-                timer.cancel();
-                characteristic.updateValue(state = true);
-
-                timer.setTimer(timeout * 60 * 1000, () => {
-                    this.log('Resetting movement for occupancy sensor', this.name);
-                    characteristic.updateValue(state = false);
-                });
-            }
-        });
     }
 
+    stateChanged() {
+        var timeout = this.config.timeout ? this.config.timeout : 30;
+
+        if (!this.state) {
+            this.log('Movement detected on occupancy sensor', this.device.name);
+
+            this.platform.notify(this.config.notify);
+            this.platform.alert(this.config.alert);
+
+            this.timer.cancel();
+            this.characteristic.updateValue(this.state = true);
+
+            this.timer.setTimer(timeout * 60 * 1000, () => {
+                this.log('Resetting movement for occupancy sensor', this.device.name);
+                this.characteristic.updateValue(this.state = false);
+            });
+        }
+
+    }
 
     getServices() {
         var services = super.getServices();
         services.push(this.service);
         return services;
-
     }
 
 };

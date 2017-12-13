@@ -17,7 +17,7 @@ module.exports = class TelldusAccessory  {
         this.Characteristic = platform.homebridge.hap.Characteristic;
         this.Service = platform.homebridge.hap.Service;
         this.name = device.name;
-        this.displayName = config.name;
+        this.displayName = config.name || device.name;
         this.device = device;
         this.config = config;
     }
@@ -28,12 +28,15 @@ module.exports = class TelldusAccessory  {
 
     }
 
+    stateChanged() {
+    }
+
     getServices() {
         var accessoryInfo = new this.Service.AccessoryInformation();
 
         accessoryInfo.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
-        accessoryInfo.setCharacteristic(this.Characteristic.Model, 'Thyren 3');
-        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.name);
+        accessoryInfo.setCharacteristic(this.Characteristic.Model, this.device.model);
+        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
 
         return [accessoryInfo];
 
