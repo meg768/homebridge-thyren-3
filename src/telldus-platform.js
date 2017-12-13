@@ -83,7 +83,6 @@ module.exports = class TelldusPlatform {
             var item = this.findItem(id);
 
             if (item != undefined) {
-                this.log('Device event:', id, status);
 
                 if (status && status.name)
                     item.device.state = status.name == 'ON';

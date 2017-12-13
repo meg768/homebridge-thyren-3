@@ -9,29 +9,35 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.Switch(this.displayName, this.name);
-        this.state   = this.device.state;
-        this.characteristic = this.service.getCharacteristic(this.Characteristic.On);
+        this.services.switch = new this.Service.Switch(this.displayName, this.name);
+        this.state = this.device.state;
 
-        this.characteristic.updateValue(this.device.state);
 
-        this.characteristic.on('get', (callback) => {
+        var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
+
+        characteristics.updateValue(this.device.state);
+
+        characteristics.on('get', (callback) => {
             callback(null, this.getState());
         });
 
-        this.characteristic.on('set', (state, callback, context) => {
+        characteristics.on('set', (state, callback, context) => {
             this.setState(state);
             callback();
         });
 
+
     }
+
 
     stateChanged() {
         super.stateChanged();
 
+        var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
+
         if (this.state != this.device.state) {
             this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, this.device.state);
-            characteristic.updateValue(this.state = this.device.state);
+            characteristics.updateValue(this.state = this.device.state);
             this.log('Done.');
         }
     }
@@ -73,15 +79,6 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         this.log(sprintf('Device %s turned off.', this.device.name));
 
         this.state = false;
-    }
-
-
-
-
-    getServices() {
-        var services = super.getServices();
-        services.push(this.service);
-        return services;
     }
 
 };

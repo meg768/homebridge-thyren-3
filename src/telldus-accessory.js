@@ -20,26 +20,35 @@ module.exports = class TelldusAccessory  {
         this.displayName = config.name || device.name;
         this.device = device;
         this.config = config;
+        this.services = {};
+
+        this.services.accessoryInformation = new this.Service.AccessoryInformation();
+
+        this.services.accessoryInformation.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
+        this.services.accessoryInformation.setCharacteristic(this.Characteristic.Model, this.device.model);
+        this.services.accessoryInformation.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
+
+
     }
 
-    identify(callback) {
-        this.log('Identify called for accessory', this.name);
-        callback();
 
+    identify(callback) {
+        this.log('Identify called for accessory', this.device.name);
+        callback();
     }
 
     stateChanged() {
     }
 
+
     getServices() {
-        var accessoryInfo = new this.Service.AccessoryInformation();
+        var services = [];
 
-        accessoryInfo.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
-        accessoryInfo.setCharacteristic(this.Characteristic.Model, this.device.model);
-        accessoryInfo.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
+        this.services.forEach((item) => {
+            services.push(item);
+        });
 
-        return [accessoryInfo];
-
+        return services;
     }
 
 };
