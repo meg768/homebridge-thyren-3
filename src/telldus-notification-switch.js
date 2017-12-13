@@ -6,9 +6,15 @@ module.exports = class NotificationSwitch extends Switch {
 
 
     setState(state) {
+        var name = this.services.switch.getCharacteristic(this.Characteristic.Name);
 
-        this.platform.notifications = state;
-        this.platform.pushover(sprintf('%s %s.', this.displayName, state ? 'på' : 'av'));
+        name.getValue((error, value) => {
+            if (!error) {
+                this.platform.notifications = state;
+                this.platform.pushover(sprintf('%s %s.', value, state ? 'på' : 'av'));
+
+            }
+        });
 
         super.setState(state);
     }
