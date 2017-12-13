@@ -31,8 +31,6 @@ module.exports = class TelldusPlatform {
         this.items = [];
 
         telldus.getDevicesSync().forEach((item) => {
-
-
             var device = {};
 
             device.id = item.id;
@@ -75,7 +73,6 @@ module.exports = class TelldusPlatform {
                         break;
                     }
                 }
-                break;
 
             }
         });
