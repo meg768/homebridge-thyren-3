@@ -42,7 +42,7 @@ module.exports = class TelldusPlatform {
             if (item.status)
                 device.state = item.status.name == 'ON';
 
-            var config = this.config[device.name];
+            var config = this.config.devices[device.name];
             debug(config);
 
             if (config) {
