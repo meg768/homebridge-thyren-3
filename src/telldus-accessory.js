@@ -1,7 +1,7 @@
 "use strict";
 
 
-module.exports = class TelldusAccessory  {
+module.exports = class TelldusAccessory {
 
     constructor(platform, config, device) {
 
@@ -37,16 +37,15 @@ module.exports = class TelldusAccessory  {
         callback();
     }
 
-    stateChanged() {
-    }
+    stateChanged() {}
 
 
     getServices() {
         var services = [];
 
-        this.services.forEach((item) => {
-            services.push(item);
-        });
+        for (var service in this.services) {
+            services.push(this.services[service]);
+        }
 
         return services;
     }
