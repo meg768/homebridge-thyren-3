@@ -43,6 +43,7 @@ module.exports = class TelldusPlatform {
                 device.state = item.status.name == 'ON';
 
             var config = this.config[device.name];
+            debug(config);
 
             if (config) {
                 var type = config.type ? config.type : 'switch';
