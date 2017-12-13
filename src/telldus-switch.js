@@ -54,6 +54,8 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     }
 
     setState(state) {
+        this.log('Settings value from HomeKit. %s is now %s.', this.device.name, state);
+        
         if (state)
             this.turnOn();
         else
