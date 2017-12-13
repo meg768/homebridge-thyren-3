@@ -32,7 +32,7 @@ module.exports = class TelldusPlatform {
 
         telldus.getDevicesSync().forEach((item) => {
             var device = {};
-            console.log(item);
+
             device.id = item.id;
             device.name = item.name;
             device.type = 'device';
@@ -43,7 +43,6 @@ module.exports = class TelldusPlatform {
                 device.state = item.status.name == 'ON';
 
             var config = this.config.devices ? this.config.devices[device.name] : undefined;
-            debug(config);
 
             if (config) {
                 var type = config.type ? config.type : 'switch';
@@ -91,10 +90,11 @@ module.exports = class TelldusPlatform {
 
                 item.stateChanged();
 
-                debug('Device event:', device);
+                this.log('Device event:', item.device);
 
-            } else {
-                debug('Device', id, 'not found.');
+            }
+            else {
+                this.log('Device', id, 'not found.');
             }
         });
 
