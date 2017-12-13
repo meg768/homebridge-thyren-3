@@ -14,9 +14,9 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
 
         var characteristics = this.services.occupancySensor.getCharacteristic(this.Characteristic.OccupancyDetected);
 
-        characteristic.updateValue(this.state);
+        characteristics.updateValue(this.state);
 
-        characteristic.on('get', (callback) => {
+        characteristics.on('get', (callback) => {
             callback(null, this.state);
         });
     }
