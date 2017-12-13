@@ -90,7 +90,7 @@ module.exports = class TelldusPlatform {
 
                 item.stateChanged();
 
-                this.log('Device event:', item.device);
+                this.log('Device event:', JSON(item.device.stringify());
 
             }
             else {
