@@ -9,13 +9,15 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.services.switch = new this.Service.Switch(this.displayName, this.name);
-        this.state = this.device.state;
+        if (this.services.switch)
+            throw new Error('A switch has already been defined!');
 
+        this.services.switch = new this.Service.Switch(this.displayName, this.name);
+        this.state = this.getDeviceState();
 
         var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
 
-        characteristics.updateValue(this.device.state);
+        characteristics.updateValue(this.state);
 
         characteristics.on('get', (callback) => {
             callback(null, this.getState());
@@ -30,16 +32,21 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     }
 
 
-    stateChanged() {
-        super.stateChanged();
+    deviceChanged() {
+        super.deviceChanged();
 
         var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
+        var state = this.device.status == 'ON';
 
-        if (this.state != this.device.state) {
-            this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, this.device.state);
-            characteristics.updateValue(this.state = this.device.state);
+        if (this.state != newState) {
+            this.log('Reflecting change to HomeKit. %s is now %s.', this.device.name, state);
+            characteristics.updateValue(this.state = state);
             this.log('Done.');
         }
+    }
+
+    getDeviceState() {
+        return this.device.status == 'ON';
     }
 
     getState() {

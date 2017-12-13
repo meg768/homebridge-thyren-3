@@ -23,12 +23,9 @@ module.exports = class TelldusAccessory {
         this.services = {};
 
         this.services.accessoryInformation = new this.Service.AccessoryInformation();
-
         this.services.accessoryInformation.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
         this.services.accessoryInformation.setCharacteristic(this.Characteristic.Model, this.device.model);
         this.services.accessoryInformation.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
-
-
     }
 
 
@@ -36,8 +33,6 @@ module.exports = class TelldusAccessory {
         this.log('Identify called for accessory', this.device.name);
         callback();
     }
-
-    stateChanged() {}
 
 
     getServices() {

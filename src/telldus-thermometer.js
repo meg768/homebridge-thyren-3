@@ -4,20 +4,34 @@ var TelldusAccessory = require('./telldus-accessory.js');
 
 module.exports = class TelldusThermometer extends TelldusAccessory {
 
-    getServices() {
-        var services = super.getServices();
-        var service  = new this.Service.TemperatureSensor(this.name);
-        var chars    = service.getCharacteristic(this.Characteristic.CurrentTemperature);
+    constructor(platform, config, device) {
+        super(platform, config, device);
 
-        chars.setProps({minValue: -50});
+        if (this.services.temperatureSensor)
+            throw new Error('A temperature sensor has already been defined!');
 
-        chars.on('get', (callback) => {
-            callback(null, parseFloat(this.device.temperature));
+        this.services.temperatureSensor = this.Service.TemperatureSensor(this.displayName, this.name);
+        this.temperature = 20;
+
+        var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
+
+        characteristics.updateValue(this.device.state);
+
+        characteristics.on('get', (callback) => {
+            callback(null, this.getState());
         });
 
-        services.push(service);
+        characteristics.on('set', (state, callback, context) => {
+            this.setState(state);
+            callback();
+        });
 
-        return services;
+
     }
+
+    getTemperature() {
+
+    }
+
 
 };

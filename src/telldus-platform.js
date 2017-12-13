@@ -23,24 +23,22 @@ module.exports = class TelldusPlatform {
 
     constructor(log, config, homebridge) {
 
-        this.config = config;
-        this.log = log;
-        this.homebridge = homebridge;
+        this.config        = config;
+        this.log           = log;
+        this.homebridge    = homebridge;
         this.notifications = false;
-        this.alerts = true;
-        this.items = [];
+        this.alerts        = true;
+        this.items         = [];
 
         telldus.getDevicesSync().forEach((item) => {
             var device = {};
 
-            device.id = item.id;
-            device.name = item.name;
-            device.type = 'device';
+            device.id       = item.id;
+            device.name     = item.name;
+            device.type     = 'device';
             device.protocol = item.protocol;
-            device.model = item.model;
-
-            if (item.status)
-                device.state = item.status.name == 'ON';
+            device.model    = item.model;
+            device.status   = item.status;
 
             var config = this.config.devices ? this.config.devices[device.name] : undefined;
 
@@ -84,10 +82,8 @@ module.exports = class TelldusPlatform {
 
             if (item != undefined) {
 
-                if (status && status.name)
-                    item.device.state = status.name == 'ON';
-
-                item.stateChanged();
+                item.device.status = status;
+                item.deviceChanged();
 
                 this.log('Device event:', JSON.stringify(item.device));
 
