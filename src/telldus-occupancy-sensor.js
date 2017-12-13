@@ -12,7 +12,8 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
         this.services.occupancySensor = new this.Service.OccupancySensor(this.displayName, this.device.name);
         this.timer = new Timer();
 
-        var characteristics = this.services.occupancySensor.getCharacteristic(this.Characteristic.OccupancyDetected);
+        var service = this.services.occupancySensor;
+        var characteristics = service.getCharacteristic(this.Characteristic.OccupancyDetected);
 
         characteristics.updateValue(this.state);
 
@@ -22,7 +23,7 @@ module.exports = class TelldusOccupancySensor extends TelldusAccessory {
     }
 
 
-    stateChanged() {
+    deviceChanged() {
         var timeout = this.config.timeout ? this.config.timeout : 30;
         var service = this.services.occupancySensor;
         var characteristics = service.getCharacteristic(this.Characteristic.OccupancyDetected);

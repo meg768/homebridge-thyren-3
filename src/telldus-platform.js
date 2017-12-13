@@ -46,7 +46,7 @@ module.exports = class TelldusPlatform {
                 var type = config.type ? config.type : 'switch';
 
                 switch(type.toLowerCase()) {
-                    case 'motionsensorX': {
+                    case 'motionsensor': {
                         this.items.push(new TelldusMotionSensor(this, config, device));
                         break;
                     }

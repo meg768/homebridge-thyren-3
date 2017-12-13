@@ -8,46 +8,40 @@ module.exports = class TelldusMotionSensor extends TelldusAccessory {
     constructor(platform, config, device) {
         super(platform, config, device);
 
-        this.service = new this.Service.MotionSensor(this.displayName, this.device.name);
+        this.state = false;
+        this.services.motionSensor = new this.Service.MotionSensor(this.displayName, this.device.name);
+        this.timer = new Timer();
 
-        var timer = new Timer();
-        var service = this.service;
-        var state = false;
-        var timeout = this.config.timeout ? this.config.timeout : 5;
-        var characteristic = service.getCharacteristic(this.Characteristic.MotionDetected);
+        var service = this.services.motionSensor;
+        var characteristics = service.getCharacteristic(this.Characteristic.MotionDetected);
 
-        characteristic.on('get', (callback) => {
-            callback(null, Boolean(state));
-        });
+        characteristics.updateValue(this.state);
 
-        this.device.on('change', () => {
-
-            if (!state) {
-                setTimeout(() => {
-                    this.log('Movement detected by motion sensor', this.name);
-
-                    if (this.config.notification && this.platform.notifications)
-                        this.platform.pushover(this.config.notification);
-
-                    timer.cancel();
-                    characteristic.updateValue(state = true);
-
-                    timer.setTimer(timeout * 1000, () => {
-                        this.log('Resetting movement for motion sensor', this.name);
-                        characteristic.updateValue(state = false);
-                    });
-
-                }, 200);
-
-            }
+        characteristics.on('get', (callback) => {
+            callback(null, this.state);
         });
     }
 
 
-    getServices() {
-        var services = super.getServices();
-        services.push(this.service);
-        return services;
+    deviceChanged() {
+        var timeout = this.config.timeout ? this.config.timeout : 5;
+        var service = this.services.motionSensor;
+        var characteristics = service.getCharacteristic(this.Characteristic.MotionDetected);
+
+        if (!this.state) {
+            this.log('Movement detected on motion sensor', this.device.name);
+
+            this.platform.notify(this.config.notify);
+            this.platform.alert(this.config.alert);
+
+            this.timer.cancel();
+            characteristics.updateValue(this.state = true);
+
+            this.timer.setTimer(timeout * 1000, () => {
+                this.log('Resetting movement for motion sensor', this.device.name);
+                characteristics.updateValue(this.state = false);
+            });
+        }
 
     }
 
