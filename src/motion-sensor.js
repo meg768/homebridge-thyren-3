@@ -1,7 +1,6 @@
 "use strict";
-var TelldusAccessory = require('./telldus-accessory.js');
-var telldus = require('telldus');
-var Timer = require('./timer.js');
+var TelldusAccessory = require('./accessory.js');
+var Timer = require('yow/timer');
 
 module.exports = class TelldusMotionSensor extends TelldusAccessory {
 

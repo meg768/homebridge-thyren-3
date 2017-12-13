@@ -1,16 +1,15 @@
 "use strict";
 
 var telldus = require('telldus');
-var tellstick = require('./tellstick.js');
-var TelldusSwitch = require('./telldus-switch.js');
-var TelldusNotificationSwitch = require('./telldus-notification-switch.js');
-var TelldusAlertSwitch = require('./telldus-alert-switch.js');
-var TelldusMotionSensor = require('./telldus-motion-sensor.js');
-var TelldusOccupancySensor = require('./telldus-occupancy-sensor.js');
-var TelldusDoorbell = require('./telldus-doorbell.js');
-var TelldusThermometer = require('./telldus-thermometer.js');
-var TelldusHygrometer = require('./telldus-hygrometer.js');
-var TelldusThermometerHygrometer = require('./telldus-thermometer-hygrometer.js');
+var TelldusSwitch = require('./switch.js');
+var TelldusNotificationSwitch = require('./notification-switch.js');
+var TelldusAlertSwitch = require('./alert-switch.js');
+var TelldusMotionSensor = require('./motion-sensor.js');
+var TelldusOccupancySensor = require('./occupancy-sensor.js');
+var TelldusDoorbell = require('./doorbell.js');
+var TelldusThermometer = require('./thermometer.js');
+var TelldusHygrometer = require('./hygrometer.js');
+var TelldusThermometerHygrometer = require('./thermometer-hygrometer.js');
 
 
 var Pushover = require('pushover-notifications');

@@ -1,5 +1,5 @@
 "use strict";
-var Switch = require('./telldus-switch.js');
+var Switch = require('./switch.js');
 var sprintf = require('yow/sprintf');
 
 module.exports = class AlertSwitch extends Switch {

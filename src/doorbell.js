@@ -1,5 +1,5 @@
 "use strict";
-var TelldusAccessory = require('./telldus-accessory.js');
+var TelldusAccessory = require('./accessory.js');
 var telldus = require('telldus');
 
 
