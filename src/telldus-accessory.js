@@ -34,6 +34,8 @@ module.exports = class TelldusAccessory {
         callback();
     }
 
+    deviceChanged() {        
+    }
 
     getServices() {
         var services = [];
