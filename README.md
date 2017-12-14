@@ -89,7 +89,11 @@ specified devices will be added from the Tellstick.
     }
 ```
 
+By default, every device is represented by a switch in HomeKit. See next section
+to configure a device as a motion/occupancy sensor rather than a switch.
+
 #### Motion Sensors
+
 
 Since motion sensors registered in your Tellstick Duo acts like
 normal switches this plugin cannot distinguish between them. The following example tells this plugin that
@@ -144,8 +148,8 @@ a triggered state as long as there has been movement during the timeout period.
             "devices": {
                 "RV-02": {
                     "type": "OccupancySensor",
-                    "name": "Living room",
                     "timeout": 60
+                    ...
                 }
             }
 
@@ -179,6 +183,29 @@ example shows how to change the device **VS-05** into a switch in HomeKit.
     ...
 ```
 
+### Sensors
+
+Since sensors does not behave as devices when using the Tellstick a
+special section named **sensors** may be created to give the
+sensors names and behaviours.
+
+```javascript
+    ...
+    "platforms": [{
+        ...
+        "sensors": {
+            "135": {
+                "name": "Temperature in the office"
+            }
+        },
+
+        ...
+    }]
+    ...
+```
+
+You specify each sensor by representing its Tellstick Duo id and
+then specifying its properties.
 
 
 ## Useful Links
