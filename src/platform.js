@@ -135,7 +135,7 @@ module.exports = class TelldusPlatform {
             }
         });
 
-        telldus.addSensorEventListener(function(id, protocol, model, type, value, timestamp) {
+        telldus.addSensorEventListener((id, protocol, model, type, value, timestamp) => {
 
             var item = this.findSensor(id);
 
