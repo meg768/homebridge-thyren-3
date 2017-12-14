@@ -21,10 +21,6 @@ module.exports = class TelldusThermometerHygrometer extends TelldusThermometer {
         characteristics.on('get', (callback) => {
             callback(null, this.getTemperature());
         });
-
-        services.push(service);
-
-        return services;
     }
 
     setupHumiditySensor() {
