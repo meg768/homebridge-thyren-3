@@ -18,6 +18,12 @@
                 "token": "amctdgksyefuqxavyuttsh2pcg4ejp"
             },
 
+            "sensors": {
+                135: {
+                    "name": "Temperatur på kontoret"
+                }
+            },
+            
             "devices": {
                 "VS-01": {
                     "name": "Terassen"

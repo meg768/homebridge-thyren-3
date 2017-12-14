@@ -27,7 +27,8 @@ module.exports = class TelldusPlatform {
         this.homebridge    = homebridge;
         this.notifications = false;
         this.alerts        = true;
-        this.items         = [];
+        this.devices       = [];
+        this.sensors       = [];
 
         telldus.getDevicesSync().forEach((item) => {
             var device = {};
@@ -37,7 +38,7 @@ module.exports = class TelldusPlatform {
             device.type     = 'device';
             device.protocol = item.protocol;
             device.model    = item.model;
-            device.status   = item.status;
+            device.state    = item.status && item.status.name == 'ON';
 
             var config = this.config.devices ? this.config.devices[device.name] : undefined;
 
@@ -46,27 +47,27 @@ module.exports = class TelldusPlatform {
 
                 switch(type.toLowerCase()) {
                     case 'motionsensor': {
-                        this.items.push(new TelldusMotionSensor(this, config, device));
+                        this.devices.push(new TelldusMotionSensor(this, config, device));
                         break;
                     }
                     case 'alertswitch': {
-                        this.items.push(new TelldusAlertSwitch(this, config, device));
+                        this.devices.push(new TelldusAlertSwitch(this, config, device));
                         break;
                     }
                     case 'notificationswitch': {
-                        this.items.push(new TelldusNotificationSwitch(this, config, device));
+                        this.devices.push(new TelldusNotificationSwitch(this, config, device));
                         break;
                     }
                     case 'occupancysensor': {
-                        this.items.push(new TelldusOccupancySensor(this, config, device));
+                        this.devices.push(new TelldusOccupancySensor(this, config, device));
                         break;
                     }
                     case 'doorbell': {
-                        this.items.push(new TelldusDoorbell(this, config, device));
+                        this.devices.push(new TelldusDoorbell(this, config, device));
                         break;
                     }
                     default: {
-                        this.items.push(new TelldusSwitch(this, config, device));
+                        this.devices.push(new TelldusSwitch(this, config, device));
                         break;
                     }
                 }
@@ -74,17 +75,58 @@ module.exports = class TelldusPlatform {
             }
         });
 
+        // Add sensors
+        telldus.getSensorsSync().forEach((item) => {
+
+            var device = {};
+
+            device.id = item.id;
+            device.name = sprintf('Sensor %d', item.id);
+            device.type = 'sensor';
+            device.protocol = item.protocol;
+            device.model = item.model;
+
+            if (item.data) {
+                item.data.forEach((entry) => {
+                    if (entry.type == 'TEMPERATURE')
+                        device.temperature = entry.value;
+                    if (entry.type == 'HUMIDITY')
+                        device.humidity = entry.value;
+
+                    device.timestamp = entry.timestamp;
+
+                });
+
+            }
+
+            switch (item.model) {
+                case 'temperaturehumidity': {
+                    this.sensors.push(new TelldusThermometerHygrometer(this, config, device));
+                    break;
+                }
+                case 'temperature': {
+                    this.sensors.push(new TelldusThermometer(this, config, device));
+                    break;
+                }
+                case 'humidity': {
+                    this.sensors.push(new TelldusHygrometer(this, config, device));
+                    break;
+                }
+            }
+
+        });
 
         telldus.addDeviceEventListener((id, status) => {
 
-            var item = this.findItem(id);
+            var item = this.findDevice(id);
 
             if (item != undefined) {
+                var device = item.device;
 
-                item.device.status = status;
+                device.state = status.name == 'ON';
                 item.deviceChanged();
 
-                this.log('Device event:', JSON.stringify(item.device));
+                this.log('Device event:', JSON.stringify(device));
 
             }
             else {
@@ -92,13 +134,46 @@ module.exports = class TelldusPlatform {
             }
         });
 
+        telldus.addSensorEventListener(function(id, protocol, model, type, value, timestamp) {
+
+            var item = this.findSensor(id);
+
+            if (item != undefined) {
+                var device = item.device;
+
+                if (protocol == 'temperature')
+                    device.temperature = value;
+
+                if (protocol == 'humidity')
+                    device.humidity = value;
+
+                if (protocol == 'temperaturehumidity') {
+                    if (type == 1)
+                        device.temperature = value;
+                    if (type == 2)
+                        device.humidity = value;
+                }
+
+                device.timestamp = timestamp;
+
+                item.deviceChanged();
+
+                this.log('Sensor event:', device);
+
+            }
+            else {
+                this.log('Sensor', id, 'not found.');
+            }
+
+        });
+
 
     }
 
-    findItem(id) {
+    findDevice(id) {
 
-        for (var i = 0; i < this.items.length; i++) {
-            var item = this.items[i];
+        for (var i = 0; i < this.devices.length; i++) {
+            var item = this.devices[i];
 
             if (id == item.device.id)
                 return item;
@@ -109,6 +184,19 @@ module.exports = class TelldusPlatform {
         };
     }
 
+    findSensor(id) {
+
+        for (var i = 0; i < this.sensors.length; i++) {
+            var item = this.sensors[i];
+
+            if (id == item.device.id)
+                return item;
+
+            if (id == item.device.name) {
+                return item;
+            }
+        };
+    }
 
     notify(message) {
         try {
@@ -156,6 +244,6 @@ module.exports = class TelldusPlatform {
     }
 
     accessories(callback) {
-        callback(this.items);
+        callback(this.devices.concat(this.sensors));
     }
 }

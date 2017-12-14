@@ -10,7 +10,6 @@ module.exports = class NotificationSwitch extends Switch {
 
         name.getValue((error, name) => {
             if (!error) {
-                this.log('NAME IS', name);
                 this.platform.notifications = state;
                 this.platform.pushover(sprintf('%s %s.', name, state ? 'på' : 'av'));
 

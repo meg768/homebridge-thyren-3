@@ -46,7 +46,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
     }
 
     getDeviceState() {
-        return this.device.status.name == 'ON';
+        return this.device.state;
     }
 
     getState() {
