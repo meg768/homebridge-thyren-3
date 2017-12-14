@@ -12,12 +12,12 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
         if (this.services.switch)
             throw new Error('A switch has already been defined!');
 
-        this.services.switch = new this.Service.Switch(this.displayName, this.name);
+        this.services.switch = new this.Service.Switch(this.displayName, this.device.name);
         this.state = this.getDeviceState();
 
         var characteristics = this.services.switch.getCharacteristic(this.Characteristic.On);
 
-        characteristics.updateValue(this.state);
+        characteristics.updateValue(this.getState());
 
         characteristics.on('get', (callback) => {
             callback(null, this.getState());
