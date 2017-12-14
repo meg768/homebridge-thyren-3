@@ -19,11 +19,11 @@
             },
 
             "sensors": {
-                135: {
+                "135": {
                     "name": "Temperatur på kontoret"
                 }
             },
-            
+
             "devices": {
                 "VS-01": {
                     "name": "Terassen"
@@ -84,11 +84,6 @@
                 },
                 "PS-02": {
                     "name": "Belysning i snickarrummet"
-                },
-                "PS-03": {
-                    "name": "Meddelanden",
-                    "type": "AlertSwitch"
-
                 },
                 "SR-01": {
                     "name": "Skymmningsrelä"
