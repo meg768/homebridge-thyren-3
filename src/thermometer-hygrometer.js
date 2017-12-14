@@ -1,8 +1,8 @@
 "use strict";
 
-var TelldusThermometer = require('./thermometer.js');
+var TelldusAccessory = require('./accessory.js');
 
-module.exports = class TelldusThermometerHygrometer extends TelldusThermometer {
+module.exports = class TelldusThermometerHygrometer extends TelldusAccessory {
 
 
     constructor(platform, config, device) {

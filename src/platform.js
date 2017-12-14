@@ -1,15 +1,14 @@
 "use strict";
 
 var telldus = require('telldus');
-var TelldusSwitch = require('./switch.js');
-var TelldusNotificationSwitch = require('./notification-switch.js');
-var TelldusAlertSwitch = require('./alert-switch.js');
-var TelldusMotionSensor = require('./motion-sensor.js');
-var TelldusOccupancySensor = require('./occupancy-sensor.js');
-var TelldusDoorbell = require('./doorbell.js');
-var TelldusThermometer = require('./thermometer.js');
-var TelldusHygrometer = require('./hygrometer.js');
-var TelldusThermometerHygrometer = require('./thermometer-hygrometer.js');
+var Switch = require('./switch.js');
+var NotificationSwitch = require('./notification-switch.js');
+var AlertSwitch = require('./alert-switch.js');
+var MotionSensor = require('./motion-sensor.js');
+var OccupancySensor = require('./occupancy-sensor.js');
+var Thermometer = require('./thermometer.js');
+var Hygrometer = require('./hygrometer.js');
+var ThermometerHygrometer = require('./thermometer-hygrometer.js');
 
 var sprintf = require('yow/sprintf');
 
@@ -48,27 +47,23 @@ module.exports = class TelldusPlatform {
 
                 switch(type.toLowerCase()) {
                     case 'motionsensor': {
-                        this.devices.push(new TelldusMotionSensor(this, config, device));
+                        this.devices.push(new MotionSensor(this, config, device));
                         break;
                     }
                     case 'alertswitch': {
-                        this.devices.push(new TelldusAlertSwitch(this, config, device));
+                        this.devices.push(new AlertSwitch(this, config, device));
                         break;
                     }
                     case 'notificationswitch': {
-                        this.devices.push(new TelldusNotificationSwitch(this, config, device));
+                        this.devices.push(new NotificationSwitch(this, config, device));
                         break;
                     }
                     case 'occupancysensor': {
-                        this.devices.push(new TelldusOccupancySensor(this, config, device));
-                        break;
-                    }
-                    case 'doorbell': {
-                        this.devices.push(new TelldusDoorbell(this, config, device));
+                        this.devices.push(new OccupancySensor(this, config, device));
                         break;
                     }
                     default: {
-                        this.devices.push(new TelldusSwitch(this, config, device));
+                        this.devices.push(new Switch(this, config, device));
                         break;
                     }
                 }
@@ -105,15 +100,15 @@ module.exports = class TelldusPlatform {
 
                 switch (item.model) {
                     case 'temperaturehumidity': {
-                        this.sensors.push(new TelldusThermometerHygrometer(this, config, device));
+                        this.sensors.push(new ThermometerHygrometer(this, config, device));
                         break;
                     }
                     case 'temperature': {
-                        this.sensors.push(new TelldusThermometer(this, config, device));
+                        this.sensors.push(new Thermometer(this, config, device));
                         break;
                     }
                     case 'humidity': {
-                        this.sensors.push(new TelldusHygrometer(this, config, device));
+                        this.sensors.push(new Hygrometer(this, config, device));
                         break;
                     }
                 }
