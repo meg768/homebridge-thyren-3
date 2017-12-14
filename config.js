@@ -39,6 +39,8 @@
                 },
                 "VS-05": {
                     "name": "Larm",
+                    "notifyOn": "Larm aktiverat",
+                    "notifyOff": "Larm avaktiverat",
                     "type": "NotificationSwitch"
                 },
                 "VS-06": {
