@@ -79,42 +79,47 @@ module.exports = class TelldusPlatform {
         // Add sensors
         telldus.getSensorsSync().forEach((item) => {
 
-            var device = {};
+            var config = this.config.sensors ? this.config.sensors[item.id] : undefined;
 
-            device.id = item.id;
-            device.name = sprintf('Sensor %d', item.id);
-            device.type = 'sensor';
-            device.protocol = item.protocol;
-            device.model = item.model;
+            if (config) {
+                var device = {};
 
-            if (item.data) {
-                item.data.forEach((entry) => {
-                    if (entry.type == 'TEMPERATURE')
-                        device.temperature = entry.value;
-                    if (entry.type == 'HUMIDITY')
-                        device.humidity = entry.value;
+                device.id = item.id;
+                device.name = sprintf('Sensor %d', item.id);
+                device.type = 'sensor';
+                device.protocol = item.protocol;
+                device.model = item.model;
 
-                    device.timestamp = entry.timestamp;
+                if (item.data) {
+                    item.data.forEach((entry) => {
+                        if (entry.type == 'TEMPERATURE')
+                            device.temperature = entry.value;
+                        if (entry.type == 'HUMIDITY')
+                            device.humidity = entry.value;
 
-                });
+                        device.timestamp = entry.timestamp;
+
+                    });
+
+                }
+
+                switch (item.model) {
+                    case 'temperaturehumidity': {
+                        this.sensors.push(new TelldusThermometerHygrometer(this, config, device));
+                        break;
+                    }
+                    case 'temperature': {
+                        this.sensors.push(new TelldusThermometer(this, config, device));
+                        break;
+                    }
+                    case 'humidity': {
+                        this.sensors.push(new TelldusHygrometer(this, config, device));
+                        break;
+                    }
+                }
+
 
             }
-
-            switch (item.model) {
-                case 'temperaturehumidity': {
-                    this.sensors.push(new TelldusThermometerHygrometer(this, config, device));
-                    break;
-                }
-                case 'temperature': {
-                    this.sensors.push(new TelldusThermometer(this, config, device));
-                    break;
-                }
-                case 'humidity': {
-                    this.sensors.push(new TelldusHygrometer(this, config, device));
-                    break;
-                }
-            }
-
         });
 
         telldus.addDeviceEventListener((id, status) => {
