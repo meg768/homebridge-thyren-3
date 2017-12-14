@@ -11,6 +11,7 @@ var TelldusThermometer = require('./thermometer.js');
 var TelldusHygrometer = require('./hygrometer.js');
 var TelldusThermometerHygrometer = require('./thermometer-hygrometer.js');
 
+var sprintf = require('yow/sprintf');
 
 var Pushover = require('pushover-notifications');
 
