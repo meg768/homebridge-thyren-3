@@ -1,6 +1,8 @@
 "use strict";
 
-var x = require('dotenv').config({path: '~/.homebridge/.env'});
+var Path = require('path');
+
+var x = require('dotenv').config({path: Path.join(process.env.HOME, '.homebridge/.env')});
 
 console.log('**********************************');
 console.log(x);
