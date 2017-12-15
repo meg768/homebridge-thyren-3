@@ -18,9 +18,11 @@ function debug() {
 }
 
 
-module.exports = class TelldusPlatform extends Events{
+module.exports = class TelldusPlatform extends Events {
 
     constructor(log, config, homebridge) {
+
+        super();
 
         this.config        = config;
         this.log           = log;
