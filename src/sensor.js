@@ -18,7 +18,7 @@ module.exports = class Sensor extends Accessory {
             callback(null, this.state);
         });
 
-        device.on('change', () => {
+        this.on('stateChanged', () => {
             var timer = new Timer();
 
             if (!this.state) {
