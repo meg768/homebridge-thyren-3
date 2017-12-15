@@ -7,6 +7,8 @@ var x = require('dotenv').config({path: Path.join(process.env.HOME, '.homebridge
 console.log('**********************************');
 console.log(x);
 console.log('**********************************');
+console.log(process.env);
+console.log('**********************************');
 
 var Events  = require('events');
 var telldus = require('telldus');
