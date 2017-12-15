@@ -1,5 +1,5 @@
 # homebridge-telldus-tellstick-duo
-Homebridge for Telldus Tellstick Duo.
+A Homebridge plugin for Telldus Tellstick Duo.
 
 A HomeBridge plugin for anyone with a working setup using a Telldus Tellstick Duo.
 This module uses the npm module https://www.npmjs.com/package/telldus instead of
@@ -187,6 +187,52 @@ sensors names and behaviours.
 
 You specify each sensor by representing its Tellstick Duo id and
 then specifying its properties.
+
+## Pushover Support
+
+By adding a **pushover** section in the configuration file you
+will be able to send messages using **Pushover**.
+
+```javascript
+    ...
+    "platforms": [{
+        ...
+        "pushover": {
+            "user": "my-pushover-user",
+            "token": "my-pushover-token"
+        }
+        ...
+    }]
+    ...
+```
+
+To send a message, use the **notify** entry under the device
+to specify the message.
+
+```javascript
+
+    {
+        ...
+        "platforms": [{
+            "platform": "Telldus Tellstick Duo",
+            "name": "Telldus Tellstick Duo",
+
+            "devices": {
+                ...
+                "RV-01": {
+                    "MotionSensor",
+                    "name": "Doorbell",
+                    "notify": "Someone at the door."
+                }
+                ...
+            }
+
+        }]
+        ...
+    }
+```
+
+
 
 
 ## Useful Links

@@ -41,34 +41,39 @@ module.exports = class TelldusPlatform  {
                 var config = this.config.devices ? this.config.devices[device.name] : {};
 
                 if (config) {
-                    var type = config.type ? config.type : 'switch';
 
-                    switch(type.toLowerCase()) {
-                        case 'motionsensor': {
-                            this.devices.push(new MotionSensor(this, config, device));
-                            break;
-                        }
-                        case 'alertswitch': {
-                            this.devices.push(new AlertSwitch(this, config, device));
-                            break;
-                        }
-                        case 'notificationswitch': {
-                            this.devices.push(new NotificationSwitch(this, config, device));
-                            break;
-                        }
-                        case 'occupancysensor': {
-                            this.devices.push(new OccupancySensor(this, config, device));
-                            break;
-                        }
-                        case 'switch': {
-                            this.devices.push(new Switch(this, config, device));
-                            break;
-                        }
-                        default: {
-                            break;
+                    switch(device.model) {
+                        case 'selflearning-switch':
+                        case 'codeswitch': {
+                            var type = config.type ? config.type : 'switch';
+
+                            switch(type.toLowerCase()) {
+                                case 'motionsensor': {
+                                    this.devices.push(new MotionSensor(this, config, device));
+                                    break;
+                                }
+                                case 'alertswitch': {
+                                    this.devices.push(new AlertSwitch(this, config, device));
+                                    break;
+                                }
+                                case 'notificationswitch': {
+                                    this.devices.push(new NotificationSwitch(this, config, device));
+                                    break;
+                                }
+                                case 'occupancysensor': {
+                                    this.devices.push(new OccupancySensor(this, config, device));
+                                    break;
+                                }
+                                case 'switch': {
+                                    this.devices.push(new Switch(this, config, device));
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
                         }
                     }
-
                 }
 
             }
