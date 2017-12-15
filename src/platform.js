@@ -1,15 +1,6 @@
 "use strict";
 
 var Path = require('path');
-
-var x = require('dotenv').config({path: Path.join(process.env.HOME, '.homebridge/.env')});
-
-console.log('**********************************');
-console.log(x);
-console.log('**********************************');
-console.log(process.env);
-console.log('**********************************');
-
 var Events  = require('events');
 var telldus = require('telldus');
 var Pushover = require('pushover-notifications');
@@ -36,13 +27,18 @@ module.exports = class TelldusPlatform  {
         this.devices       = [];
         this.sensors       = [];
 
+        // Load .env
+        require('dotenv').config({path: Path.join(process.env.HOME, '.homebridge/.env')});
+
         if (process.env.PUSHOVER_USER && process.env.PUSHOVER_TOKEN) {
             this.log('Using Pushover credentials from .env');
 
             config.pushover = {
                 name: process.env.PUSHOVER_USER,
                 token: process.env.PUSHOVER_TOKEN
-            }
+            };
+
+            console.log(config);
         }
 
 
