@@ -6,17 +6,17 @@ var NotificationSwitch = require('./notification-switch.js');
 var AlertSwitch = require('./alert-switch.js');
 var MotionSensor = require('./motion-sensor.js');
 var OccupancySensor = require('./occupancy-sensor.js');
-var Thermometer = require('./thermometer.js');
-var Hygrometer = require('./hygrometer.js');
 var ThermometerHygrometer = require('./thermometer-hygrometer.js');
 
 var sprintf = require('yow/sprintf');
+var Events  = require('events');
 
 var Pushover = require('pushover-notifications');
 
 function debug() {
     console.log.apply(this, arguments);
 }
+
 
 module.exports = class TelldusPlatform {
 
@@ -99,16 +99,10 @@ module.exports = class TelldusPlatform {
                 }
 
                 switch (item.model) {
+                    case 'humidity':
+                    case 'temperature':
                     case 'temperaturehumidity': {
                         this.sensors.push(new ThermometerHygrometer(this, config, device));
-                        break;
-                    }
-                    case 'temperature': {
-                        this.sensors.push(new Thermometer(this, config, device));
-                        break;
-                    }
-                    case 'humidity': {
-                        this.sensors.push(new Hygrometer(this, config, device));
                         break;
                     }
                 }
@@ -125,7 +119,7 @@ module.exports = class TelldusPlatform {
                 var device = item.device;
 
                 device.state = status.name == 'ON';
-                item.deviceChanged();
+                this.emit('change');
 
                 this.log('Device event:', JSON.stringify(device));
 
@@ -156,8 +150,7 @@ module.exports = class TelldusPlatform {
                 }
 
                 device.timestamp = timestamp;
-
-                item.deviceChanged();
+                this.emit('change');
 
                 this.log('Sensor event:', device);
 

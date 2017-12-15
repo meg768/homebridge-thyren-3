@@ -1,7 +1,8 @@
 "use strict";
 
+var Events  = require('events');
 
-module.exports = class TelldusAccessory {
+module.exports = class TelldusAccessory extends Events {
 
     constructor(platform, config, device) {
 
@@ -20,12 +21,18 @@ module.exports = class TelldusAccessory {
         this.displayName = config.name || device.name;
         this.device = device;
         this.config = config;
-        this.services = {};
+        this.services = [];
 
-        this.services.accessoryInformation = new this.Service.AccessoryInformation();
-        this.services.accessoryInformation.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
-        this.services.accessoryInformation.setCharacteristic(this.Characteristic.Model, this.device.model);
-        this.services.accessoryInformation.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
+        this.setupAccessoryInformation();
+    }
+
+    setupAccessoryInformation() {
+        var service = new this.Service.AccessoryInformation();
+        service.setCharacteristic(this.Characteristic.Manufacturer, 'Thyren 3');
+        service.setCharacteristic(this.Characteristic.Model, this.device.model);
+        service.setCharacteristic(this.Characteristic.SerialNumber, this.device.name);
+
+        this.services.push(service);
     }
 
 
@@ -34,17 +41,8 @@ module.exports = class TelldusAccessory {
         callback();
     }
 
-    deviceChanged() {        
-    }
-
     getServices() {
-        var services = [];
-
-        for (var service in this.services) {
-            services.push(this.services[service]);
-        }
-
-        return services;
+        return this.services;
     }
 
 };
