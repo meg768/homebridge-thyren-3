@@ -1,8 +1,10 @@
 "use strict";
 
-require('dotenv').config({path: '~/.homebridge/.env'});
+var x = require('dotenv').config({path: '~/.homebridge/.env'});
 
-console.log(process.env);
+console.log('**********************************');
+console.log(x);
+console.log('**********************************');
 
 var Events  = require('events');
 var telldus = require('telldus');
