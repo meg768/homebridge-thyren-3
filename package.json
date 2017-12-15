@@ -25,9 +25,10 @@
   },
   "homepage": "https://github.com/meg768/homebridge-thyren-3#readme",
   "dependencies": {
-    "yow": "^1.0.85",
-    "pushover-notifications": "^0.2.4",
-    "telldus": "^1.1.0"
+      "dotenv": "^4.0.0",
+      "pushover-notifications": "^0.2.4",
+      "telldus": "^1.1.0",
+      "yow": "^1.0.85"
 
   }
 }
