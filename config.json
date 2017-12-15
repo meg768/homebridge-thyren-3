@@ -95,7 +95,8 @@
                 "RK-01": {
                     "name": "Ringklocka",
                     "type": "MotionSensor",
-                    "alert": "Det ringer på dörren."
+                    "alert": "Det ringer på dörren.",
+                    "timeout": 1
                 },
 
                 "PS-02": {
