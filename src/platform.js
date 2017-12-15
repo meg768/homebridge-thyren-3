@@ -79,7 +79,7 @@ module.exports = class TelldusPlatform  {
         // Add sensors
         telldus.getSensorsSync().forEach((item) => {
 
-            var config = this.config.sensors ? this.config.sensors[item.id] : undefined;
+            var config = this.config.sensors ? this.config.sensors[item.id] : {};
 
             if (config) {
                 var device = {};

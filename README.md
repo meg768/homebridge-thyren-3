@@ -65,7 +65,7 @@ Optionally, you may configure this plugin with the following additions.
 ### Devices
 
 If you specify a section in your config file named **devices** only the
-specified devices will be added from the Tellstick.
+specified devices will be added from the Tellstick Duo.
 
 ```javascript
 
@@ -89,14 +89,18 @@ specified devices will be added from the Tellstick.
     }
 ```
 
+
+#### Switches
+
 By default, every device is represented by a switch in HomeKit. See next section
 to configure a device as a motion/occupancy sensor rather than a switch.
 
 #### Motion Sensors
 
 Since motion sensors registered in your Tellstick Duo acts like
-normal switches this plugin cannot distinguish between them. The following example tells this plugin that
-the device **RV-01** is a motion sensor and behaves like it in HomeKit, turning it on
+normal switches this plugin cannot distinguish between them. The following
+example tells this plugin that the device **RV-01** is a motion sensor and
+behaves like it in HomeKit, turning it on
 for a while when activated and then automatically turning it off.
 
 ```javascript
@@ -104,17 +108,16 @@ for a while when activated and then automatically turning it off.
     {
         ...
         "platforms": [{
-            "platform": "Telldus Tellstick Duo",
-            "name": "Telldus Tellstick Duo",
-
+            ...
             "devices": {
                 "RV-01": {
                     "type": "MotionSensor",
-                    "name": "Kitchen lights",
-                    "notify": "Movement in the kitchen."
+                    "name": "Kitchen sensor",
+                    "notify": "Movement in the kitchen.",
                     "timeout": 10
                 }
             }
+            ...
 
         }]
         ...
@@ -129,7 +132,7 @@ The **name**
 property is also optional. If not specified, the Telldus device name is used.
 
 By adding the **notify** property you may get notified when the motion
-sensor has been triggered. Specify the text you want to be notified with.
+sensor has been triggered.
 
 #### Occupancy Sensors
 
@@ -141,16 +144,15 @@ a triggered state as long as there has been movement during the timeout period.
     {
         ...
         "platforms": [{
-            "platform": "Telldus Tellstick Duo",
-            "name": "Telldus Tellstick Duo",
-
+            ...
             "devices": {
                 "RV-02": {
                     "type": "OccupancySensor",
+                    "name": "Office sensor",
                     "timeout": 60
-                    ...
                 }
             }
+            ...
 
         }]
         ...
@@ -161,26 +163,6 @@ The **timeout** entry is optional and specifies, in minutes,
 how long the motion sensor should be in a triggered state after
 a movement has been detected. Default is 30 minutes.
 
-
-#### Switches
-
-By default, every device is represented by a switch in HomeKit. The following
-example shows how to change the device **VS-05** into a switch in HomeKit.
-
-```javascript
-    ...
-    "platforms": [{
-        ...
-
-        "devices": {
-            "VS-05": {
-                "type": "Switch"
-            }
-        }
-
-    }]
-    ...
-```
 
 ### Sensors
 
