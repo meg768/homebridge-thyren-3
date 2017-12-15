@@ -18,11 +18,9 @@ function debug() {
 }
 
 
-module.exports = class TelldusPlatform extends Events {
+module.exports = class TelldusPlatform  {
 
     constructor(log, config, homebridge) {
-
-        super();
 
         this.config        = config;
         this.log           = log;
@@ -115,13 +113,13 @@ module.exports = class TelldusPlatform extends Events {
 
         telldus.addDeviceEventListener((id, status) => {
 
-            var item = this.findDevice(id);
+            var accessory = this.findDevice(id);
 
-            if (item != undefined) {
-                var device = item.device;
+            if (accessory != undefined) {
+                var device = accessory.device;
 
                 device.state = status.name == 'ON';
-                this.emit('stateChanged', device.state);
+                accessory.emit('stateChanged', device.state);
 
                 this.log('Device event:', JSON.stringify(device));
 
@@ -133,21 +131,21 @@ module.exports = class TelldusPlatform extends Events {
 
         telldus.addSensorEventListener((id, protocol, model, type, value, timestamp) => {
 
-            var item = this.findSensor(id);
+            var accessory = this.findSensor(id);
 
-            if (item != undefined) {
-                var device = item.device;
+            if (accessory != undefined) {
+                var device = accessory.device;
 
                 device.timestamp = timestamp;
 
                 if (protocol == 'temperature' || (protocol == 'temperaturehumidity' && type == 1)) {
                     device.temperature = value;
-                    this.emit('temperatureChanged', value, timestamp);
+                    accessory.emit('temperatureChanged', value, timestamp);
                 }
 
                 if (protocol == 'humidity' || (protocol == 'temperaturehumidity' && type == 2)) {
                     device.humidity = value;
-                    this.emit('humidityChanged', value, timestamp);
+                    accessory.emit('humidityChanged', value, timestamp);
 
                 }
 
@@ -166,13 +164,13 @@ module.exports = class TelldusPlatform extends Events {
     findDevice(id) {
 
         for (var i = 0; i < this.devices.length; i++) {
-            var item = this.devices[i];
+            var accessory = this.devices[i];
 
-            if (id == item.device.id)
-                return item;
+            if (id == accessory.device.id)
+                return accessory;
 
-            if (id == item.device.name) {
-                return item;
+            if (id == accessory.device.name) {
+                return accessory;
             }
         };
     }
@@ -180,13 +178,13 @@ module.exports = class TelldusPlatform extends Events {
     findSensor(id) {
 
         for (var i = 0; i < this.sensors.length; i++) {
-            var item = this.sensors[i];
+            var accessory = this.sensors[i];
 
-            if (id == item.device.id)
-                return item;
+            if (id == accessory.device.id)
+                return accessory;
 
-            if (id == item.device.name) {
-                return item;
+            if (id == accessory.device.name) {
+                return accessory;
             }
         };
     }
