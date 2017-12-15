@@ -30,7 +30,7 @@ module.exports = class TelldusSwitch extends TelldusAccessory {
             callback();
         });
 
-        this.device.on('change', () => {
+        this.on('stateChanged', () => {
             var state = this.getDeviceState();
 
             if (this.state != state) {

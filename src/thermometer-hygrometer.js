@@ -38,6 +38,13 @@ module.exports = class TelldusThermometerHygrometer extends Accessory {
             callback(null, this.getTemperature());
         });
 
+        this.on('temperatureChanged', () => {
+            var temperature = this.getTemperature();
+            this.log('Reflecting temperature to HomeKit. %s is now %s.', this.device.name, temperature);
+            characteristics.updateValue(temperature);
+            this.log('Done.');
+        });
+
         this.services.push(service);
     }
 
@@ -51,12 +58,18 @@ module.exports = class TelldusThermometerHygrometer extends Accessory {
             callback(null, this.getHumidity());
         });
 
+        this.on('humidityChanged', () => {
+            var humidity = this.getHumidity();
+            this.log('Reflecting humidity to HomeKit. %s is now %s.', this.device.name, humidity);
+            characteristics.updateValue(humidity);
+            this.log('Done.');
+        });
+
         this.services.push(service);
     }
 
     getTemperature() {
-        return this.device.temperature ? parseFloat(this.device.temperature) : undefined;
-
+        return this.device.temperature ? parseFloat(this.device.temperature) : 0;
     }
 
     getHumidity() {

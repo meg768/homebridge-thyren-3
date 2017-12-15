@@ -119,7 +119,7 @@ module.exports = class TelldusPlatform {
                 var device = item.device;
 
                 device.state = status.name == 'ON';
-                this.emit('change');
+                this.emit('stateChanged', device.state);
 
                 this.log('Device event:', JSON.stringify(device));
 
@@ -136,23 +136,20 @@ module.exports = class TelldusPlatform {
             if (item != undefined) {
                 var device = item.device;
 
-                if (protocol == 'temperature')
+                device.timestamp = timestamp;
+
+                if (protocol == 'temperature' || (protocol == 'temperaturehumidity' && type == 1)) {
                     device.temperature = value;
-
-                if (protocol == 'humidity')
-                    device.humidity = value;
-
-                if (protocol == 'temperaturehumidity') {
-                    if (type == 1)
-                        device.temperature = value;
-                    if (type == 2)
-                        device.humidity = value;
+                    this.emit('temperatureChanged', value, timestamp);
                 }
 
-                device.timestamp = timestamp;
-                this.emit('change');
+                if (protocol == 'humidity' || (protocol == 'temperaturehumidity' && type == 2)) {
+                    device.humidity = value;
+                    this.emit('humidityChanged', value, timestamp);
 
-                this.log('Sensor event:', device);
+                }
+
+                this.log('Sensor event:', JSON.stringify(device));
 
             }
             else {
