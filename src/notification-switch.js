@@ -9,15 +9,15 @@ module.exports = class NotificationSwitch extends TelldusSwitch {
 
         super.setState(state);
 
-        var alert = sprintf('%s %s', state ? 'on' : 'off');
+        var alert = sprintf('%s %s', this.displayName, state ? 'ON' : 'OFF');
 
         if (state) {
-            if (this.config.notifyOn)
-                alert = this.config.notifyOn;
+            if (this.config.on)
+                alert = this.config.on;
         }
         else {
-            if (this.config.notifyOff)
-                alert = this.config.notifyOff;
+            if (this.config.off)
+                alert = this.config.off;
         }
 
         this.platform.notifications = state;

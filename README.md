@@ -206,7 +206,7 @@ will be able to send messages using **Pushover**.
     ...
 ```
 
-To send a message, use the **notify** entry under the device
+To send a message, use the **notify** or **alert** property under the device
 to specify the message.
 
 ```javascript
@@ -232,6 +232,33 @@ to specify the message.
     }
 ```
 
+The difference between **notify** and **alert** is that notifications
+may be turned on or off using a **NotifycationSwitch**. By using **alert**
+the message is always sent.
+
+```javascript
+
+    {
+        ...
+        "platforms": [{
+            "platform": "Telldus Tellstick Duo",
+            "name": "Telldus Tellstick Duo",
+
+            "devices": {
+                ...
+                "VS-05": {
+                    "name": "Notifications",
+                    "type": "NotificationSwitch",
+                    "on": "Notifications are now on.",
+                    "off": "Notifications are now off."
+                }
+                ...
+            }
+
+        }]
+        ...
+    }
+```
 
 
 
