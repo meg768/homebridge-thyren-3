@@ -29,7 +29,7 @@ module.exports = class TelldusThermometerHygrometer extends Accessory {
 
     setupTemperatureSensor() {
         var service = new this.Service.TemperatureSensor(this.displayName, this.device.name);
-        var characteristics = service.temperatureSensor.getCharacteristic(this.Characteristic.CurrentTemperature);
+        var characteristics = service.getCharacteristic(this.Characteristic.CurrentTemperature);
 
         characteristics.setProps({minValue: -50});
         characteristics.updateValue(this.getTemperature());
