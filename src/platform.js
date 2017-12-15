@@ -1,5 +1,9 @@
 "use strict";
 
+require('dotenv').config({path: '~/.homebridge/.env'});
+
+console.log(process.env);
+
 var Events  = require('events');
 var telldus = require('telldus');
 var Pushover = require('pushover-notifications');
@@ -28,7 +32,7 @@ module.exports = class TelldusPlatform  {
 
         if (process.env.PUSHOVER_USER && process.env.PUSHOVER_TOKEN) {
             this.log('Using Pushover credentials from .env');
-            
+
             config.pushover = {
                 name: process.env.PUSHOVER_USER,
                 token: process.env.PUSHOVER_TOKEN
