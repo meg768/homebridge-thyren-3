@@ -7,8 +7,6 @@ module.exports = class Sensor extends Accessory {
 
     setupSensor(Service, Characteristic, timeout) {
 
-        this.log('Settings up sensor!!', this.name);
-
         this.state = false;
 
         var service = new Service(this.displayName, this.device.name);
@@ -32,7 +30,7 @@ module.exports = class Sensor extends Accessory {
                 timer.cancel();
                 characteristics.updateValue(this.state = true);
 
-                this.timer.setTimer(timeout * 1000, () => {
+                timer.setTimer(timeout * 1000, () => {
                     this.log('Resetting movement for sensor', this.device.name);
                     characteristics.updateValue(this.state = false);
                 });
