@@ -7,6 +7,8 @@ module.exports = class Sensor extends Accessory {
 
     setupSensor(Service, Characteristic, timeout) {
 
+        this.log('Settings up sensor!!', this.name);
+
         this.state = false;
 
         var service = new Service(this.displayName, this.device.name);
