@@ -1,6 +1,9 @@
 "use strict";
 
+var Events  = require('events');
 var telldus = require('telldus');
+var Pushover = require('pushover-notifications');
+
 var Switch = require('./switch.js');
 var NotificationSwitch = require('./notification-switch.js');
 var AlertSwitch = require('./alert-switch.js');
@@ -9,13 +12,6 @@ var OccupancySensor = require('./occupancy-sensor.js');
 var ThermometerHygrometer = require('./thermometer-hygrometer.js');
 
 var sprintf = require('yow/sprintf');
-var Events  = require('events');
-
-var Pushover = require('pushover-notifications');
-
-function debug() {
-    console.log.apply(this, arguments);
-}
 
 
 module.exports = class TelldusPlatform  {
@@ -31,44 +27,53 @@ module.exports = class TelldusPlatform  {
         this.sensors       = [];
 
         telldus.getDevicesSync().forEach((item) => {
-            var device = {};
 
-            device.id       = item.id;
-            device.name     = item.name;
-            device.type     = 'device';
-            device.protocol = item.protocol;
-            device.model    = item.model;
-            device.state    = item.status && item.status.name == 'ON';
+            if (item.type == 'DEVICE') {
+                var device = {};
 
-            var config = this.config.devices ? this.config.devices[device.name] : undefined;
+                device.id       = item.id;
+                device.name     = item.name;
+                device.type     = 'device';
+                device.protocol = item.protocol;
+                device.model    = item.model;
+                device.state    = item.status && item.status.name == 'ON';
 
-            if (config) {
-                var type = config.type ? config.type : 'switch';
+                var config = this.config.devices ? this.config.devices[device.name] : {};
 
-                switch(type.toLowerCase()) {
-                    case 'motionsensor': {
-                        this.devices.push(new MotionSensor(this, config, device));
-                        break;
+                if (config) {
+                    var type = config.type ? config.type : 'switch';
+
+                    switch(type.toLowerCase()) {
+                        case 'motionsensor': {
+                            this.devices.push(new MotionSensor(this, config, device));
+                            break;
+                        }
+                        case 'alertswitch': {
+                            this.devices.push(new AlertSwitch(this, config, device));
+                            break;
+                        }
+                        case 'notificationswitch': {
+                            this.devices.push(new NotificationSwitch(this, config, device));
+                            break;
+                        }
+                        case 'occupancysensor': {
+                            this.devices.push(new OccupancySensor(this, config, device));
+                            break;
+                        }
+                        case 'switch': {
+                            this.devices.push(new Switch(this, config, device));
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
                     }
-                    case 'alertswitch': {
-                        this.devices.push(new AlertSwitch(this, config, device));
-                        break;
-                    }
-                    case 'notificationswitch': {
-                        this.devices.push(new NotificationSwitch(this, config, device));
-                        break;
-                    }
-                    case 'occupancysensor': {
-                        this.devices.push(new OccupancySensor(this, config, device));
-                        break;
-                    }
-                    default: {
-                        this.devices.push(new Switch(this, config, device));
-                        break;
-                    }
+
                 }
 
             }
+
+
         });
 
         // Add sensors
@@ -85,6 +90,12 @@ module.exports = class TelldusPlatform  {
                 device.protocol = item.protocol;
                 device.model = item.model;
 
+                if (device.model == 'EA4C')
+                    device.model = 'temperature';
+
+                if (device.model == '1A2D')
+                    device.model = 'temperaturehumidity';
+
                 if (item.data) {
                     item.data.forEach((entry) => {
                         if (entry.type == 'TEMPERATURE')
@@ -98,7 +109,7 @@ module.exports = class TelldusPlatform  {
 
                 }
 
-                switch (item.model) {
+                switch (device.model) {
                     case 'humidity':
                     case 'temperature':
                     case 'temperaturehumidity': {

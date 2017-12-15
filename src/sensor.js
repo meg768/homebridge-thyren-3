@@ -1,9 +1,9 @@
 "use strict";
 
-var Accessory = require('./accessory.js');
+var TelldusAccessory = require('./accessory.js');
 var Timer = require('yow/timer');
 
-module.exports = class Sensor extends Accessory {
+module.exports = class TelldusSensor extends TelldusAccessory {
 
     setupSensor(Service, Characteristic, timeout) {
 
@@ -35,8 +35,6 @@ module.exports = class Sensor extends Accessory {
                     characteristics.updateValue(this.state = false);
                 });
             }
-
-
         });
 
         this.services.push(service);

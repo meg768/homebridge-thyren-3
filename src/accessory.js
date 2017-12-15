@@ -7,12 +7,9 @@ module.exports = class TelldusAccessory extends Events {
     constructor(platform, config, device) {
 
         super();
-        
+
         if (!device.name)
             throw new Error('An accessory must have a name.');
-
-        if (!config.name)
-            throw new Error('An accessory must have a display name.');
 
         this.log = platform.log;
         this.platform = platform;
