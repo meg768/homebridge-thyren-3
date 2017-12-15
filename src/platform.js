@@ -30,6 +30,8 @@ module.exports = class TelldusPlatform  {
         // Load .env
         require('dotenv').config({path: Path.join(process.env.HOME, '.homebridge/.env')});
 
+        console.log(process.env);
+        
         if (process.env.PUSHOVER_USER && process.env.PUSHOVER_TOKEN) {
             this.log('Using Pushover credentials from .env');
 
