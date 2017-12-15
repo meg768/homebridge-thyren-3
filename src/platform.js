@@ -26,6 +26,16 @@ module.exports = class TelldusPlatform  {
         this.devices       = [];
         this.sensors       = [];
 
+        if (process.env.PUSHOVER_USER && process.env.PUSHOVER_TOKEN) {
+            this.log('Using Pushover credentials from .env');
+            
+            config.pushover = {
+                name: process.env.PUSHOVER_USER,
+                token: process.env.PUSHOVER_TOKEN
+            }
+        }
+
+
         telldus.getDevicesSync().forEach((item) => {
 
             if (item.type == 'DEVICE') {
